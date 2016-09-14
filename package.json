@@ -1,0 +1,127 @@
+{
+  "name": "@booga/vblocks",
+  "version": "0.1.0",
+  "description": "Composed section blocks: hero, CTA, FAQ, footer, gallery, portfolio, post, team, testimonial, blog, business, features. Schema-validated content, vUi primitives, DSL-styled.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./hero": {
+      "types": "./dist/hero/index.d.ts",
+      "import": "./dist/hero/index.js",
+      "require": "./dist/hero/index.cjs"
+    },
+    "./cta": {
+      "types": "./dist/cta/index.d.ts",
+      "import": "./dist/cta/index.js",
+      "require": "./dist/cta/index.cjs"
+    },
+    "./faq": {
+      "types": "./dist/faq/index.d.ts",
+      "import": "./dist/faq/index.js",
+      "require": "./dist/faq/index.cjs"
+    },
+    "./footer": {
+      "types": "./dist/footer/index.d.ts",
+      "import": "./dist/footer/index.js",
+      "require": "./dist/footer/index.cjs"
+    },
+    "./gallery": {
+      "types": "./dist/gallery/index.d.ts",
+      "import": "./dist/gallery/index.js",
+      "require": "./dist/gallery/index.cjs"
+    },
+    "./portfolio": {
+      "types": "./dist/portfolio/index.d.ts",
+      "import": "./dist/portfolio/index.js",
+      "require": "./dist/portfolio/index.cjs"
+    },
+    "./post": {
+      "types": "./dist/post/index.d.ts",
+      "import": "./dist/post/index.js",
+      "require": "./dist/post/index.cjs"
+    },
+    "./team": {
+      "types": "./dist/team/index.d.ts",
+      "import": "./dist/team/index.js",
+      "require": "./dist/team/index.cjs"
+    },
+    "./testimonial": {
+      "types": "./dist/testimonial/index.d.ts",
+      "import": "./dist/testimonial/index.js",
+      "require": "./dist/testimonial/index.cjs"
+    },
+    "./blog": {
+      "types": "./dist/blog/index.d.ts",
+      "import": "./dist/blog/index.js",
+      "require": "./dist/blog/index.cjs"
+    },
+    "./business": {
+      "types": "./dist/business/index.d.ts",
+      "import": "./dist/business/index.js",
+      "require": "./dist/business/index.cjs"
+    },
+    "./features": {
+      "types": "./dist/features/index.d.ts",
+      "import": "./dist/features/index.js",
+      "require": "./dist/features/index.cjs"
+    }
+  },
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run --coverage",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@booga/vdsl": "^0.1.0",
+    "@booga/vhooks": "^0.1.0",
+    "@booga/vui": "^0.1.0",
+    "lucide-react": "^1.0.0",
+    "zod": "^3.0.0"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@testing-library/jest-dom": "^6.0.0",
+    "@testing-library/react": "^16.0.0",
+    "@types/node": "^20.19.41",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "@vitest/coverage-v8": "^3.0.0",
+    "axe-core": "^4.0.0",
+    "eslint": "^9.0.0",
+    "globals": "^15.0.0",
+    "jsdom": "^25.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^3.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "author": "bvasilenko"
+}
