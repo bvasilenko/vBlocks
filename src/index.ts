@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 bvasilenko
 export * from "./hero/index";
 export * from "./cta/index";
 export * from "./faq/index";

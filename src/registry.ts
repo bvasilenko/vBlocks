@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 bvasilenko
 import { type AnyBlockMeta } from "./types";
 
 import { HeroSplit } from "./hero/HeroSplit/index";

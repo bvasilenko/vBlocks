@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 bvasilenko
 import { type GallerySplitContent } from "./schema";
 
 export const GallerySplitDefaultContent: GallerySplitContent = {

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 bvasilenko
 import { Badge, Box, Grid, Inline, Separator, Stack, cn } from "@booga/vui";
 import { type BlockProps } from "../../types";
 import { themeStyle } from "../../theme";

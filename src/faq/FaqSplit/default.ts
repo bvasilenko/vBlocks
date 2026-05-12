@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 bvasilenko
 import { type FaqSplitContent } from "./schema";
 
 export const FaqSplitDefaultContent: FaqSplitContent = {

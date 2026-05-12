@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 bvasilenko
 import { type PostCenteredContent } from "./schema";
 
 export const PostCenteredDefaultContent: PostCenteredContent = {

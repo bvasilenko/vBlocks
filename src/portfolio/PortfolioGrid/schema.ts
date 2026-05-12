@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 bvasilenko
 import { z } from "zod";
 import { ImageSchema } from "../../shared/schemas";
 

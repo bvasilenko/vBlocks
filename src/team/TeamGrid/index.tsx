@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 bvasilenko
 import { Avatar, AvatarFallback, AvatarImage, Box, Card, CardContent, Grid, Stack, cn } from "@booga/vui";
 import { type BlockProps } from "../../types";
 import { themeStyle } from "../../theme";

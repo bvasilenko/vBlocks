@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 bvasilenko
 import { type TestimonialGridContent } from "./schema";
 
 export const TestimonialGridDefaultContent: TestimonialGridContent = {

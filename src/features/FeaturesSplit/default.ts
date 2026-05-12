@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 bvasilenko
 import { type FeaturesSplitContent } from "./schema";
 
 export const FeaturesSplitDefaultContent: FeaturesSplitContent = {

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 bvasilenko
 export { FooterSplit } from "./FooterSplit/index";
 export { FooterSplitContentSchema } from "./FooterSplit/schema";
 export { FooterSplitDefaultContent } from "./FooterSplit/default";
