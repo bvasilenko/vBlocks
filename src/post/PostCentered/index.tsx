@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 bvasilenko
-import { Badge, Box, Inline, Separator, Stack, cn } from "@booga/vui";
+import { Badge, Separator, cn } from "@booga/vui";
+import { DBox, DInline, DStack } from "../../primitives";
 import { type BlockProps } from "../../types";
 import { themeStyle } from "../../theme";
 import { PostCenteredContentSchema, type PostCenteredContent } from "./schema";
@@ -9,18 +10,18 @@ export function PostCentered({ content, theme }: BlockProps<PostCenteredContent>
   PostCenteredContentSchema.parse(content);
   const { title, author, date, category, body } = content;
   return (
-    <Box as="article" style={themeStyle(theme)}>
-      <Stack className={cn("max-w-2xl mx-auto px-6 py-16 gap-6")}>
+    <DBox as="article" style={themeStyle(theme)}>
+      <DStack px={6} py={16} gap={6} className={cn("max-w-2xl mx-auto")}>
         {category && <Badge variant="secondary">{category}</Badge>}
-        <Box as="h1" className={cn("text-4xl font-bold tracking-tight leading-snug")}>{title}</Box>
-        <Inline className={cn("gap-2 text-sm text-[var(--v-color-muted)]")}>
-          <Box as="span">{author}</Box>
-          <Box as="span" aria-hidden="true">·</Box>
-          <Box as="time" dateTime={date}>{date}</Box>
-        </Inline>
+        <DBox as="h1" className={cn("text-4xl font-bold tracking-tight leading-snug")}>{title}</DBox>
+        <DInline gap={2} color="muted" className={cn("text-sm")}>
+          <DBox as="span">{author}</DBox>
+          <DBox as="span" aria-hidden="true">·</DBox>
+          <DBox as="time" dateTime={date}>{date}</DBox>
+        </DInline>
         <Separator />
-        <Box as="p" className={cn("text-base leading-relaxed")}>{body}</Box>
-      </Stack>
-    </Box>
+        <DBox as="p" className={cn("text-base leading-relaxed")}>{body}</DBox>
+      </DStack>
+    </DBox>
   );
 }

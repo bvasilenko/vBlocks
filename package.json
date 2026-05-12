@@ -92,7 +92,6 @@
     "@booga/vdsl": "^0.1.0",
     "@booga/vhooks": "^0.1.0",
     "@booga/vui": "^0.1.0",
-    "lucide-react": "^1.0.0",
     "zod": "^3.0.0"
   },
   "peerDependencies": {
@@ -107,7 +106,7 @@
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.0.0",
-    "@vitest/coverage-v8": "^3.0.0",
+    "@vitest/coverage-istanbul": "^3.0.0",
     "axe-core": "^4.0.0",
     "eslint": "^9.0.0",
     "globals": "^15.0.0",

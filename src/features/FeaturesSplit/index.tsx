@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 bvasilenko
-import { Box, Grid, Inline, Stack, cn } from "@booga/vui";
+import { cn } from "@booga/vui";
+import { DBox, DGrid, DInline, DStack } from "../../primitives";
 import { type BlockProps } from "../../types";
 import { themeStyle } from "../../theme";
 import { FeaturesSplitContentSchema, type FeaturesSplitContent } from "./schema";
@@ -9,32 +10,32 @@ export function FeaturesSplit({ content, theme }: BlockProps<FeaturesSplitConten
   FeaturesSplitContentSchema.parse(content);
   const { heading, description, features } = content;
   return (
-    <Box as="section" aria-label={heading} style={themeStyle(theme)}>
-      <Grid columns={2} className={cn("max-w-6xl mx-auto px-6 py-16 gap-16 items-start")}>
-        <Stack className={cn("gap-4 sticky top-16")}>
-          <Box as="h2" className={cn("text-3xl font-bold tracking-tight")}>{heading}</Box>
+    <DBox as="section" aria-label={heading} style={themeStyle(theme)}>
+      <DGrid columns={2} px={6} py={16} gap={16} align="start" className={cn("max-w-6xl mx-auto")}>
+        <DStack gap={4} className={cn("sticky top-16")}>
+          <DBox as="h2" className={cn("text-3xl font-bold tracking-tight")}>{heading}</DBox>
           {description && (
-            <Box as="p" className={cn("text-lg text-[var(--v-color-muted)]")}>{description}</Box>
+            <DBox as="p" color="muted" className={cn("text-lg")}>{description}</DBox>
           )}
-        </Stack>
-        <Box as="ul" className={cn("list-none m-0 p-0 flex flex-col gap-8")}>
+        </DStack>
+        <DBox as="ul" m={0} p={0} gap={8} display="flex" className={cn("list-none flex-col")}>
           {features.map((feature, i) => (
-            <Box as="li" key={i}>
-              <Inline className={cn("gap-4 items-start")}>
+            <DBox as="li" key={i}>
+              <DInline gap={4} align="start">
                 {feature.icon && (
-                  <Box as="span" className={cn("text-xl flex-shrink-0 mt-0.5")} aria-hidden="true">
+                  <DBox as="span" className={cn("text-xl flex-shrink-0 mt-0.5")} aria-hidden="true">
                     {feature.icon}
-                  </Box>
+                  </DBox>
                 )}
-                <Stack className={cn("gap-1")}>
-                  <Box as="h3" className={cn("font-semibold")}>{feature.title}</Box>
-                  <Box as="p" className={cn("text-sm text-[var(--v-color-muted)]")}>{feature.description}</Box>
-                </Stack>
-              </Inline>
-            </Box>
+                <DStack gap={1}>
+                  <DBox as="h3" className={cn("font-semibold")}>{feature.title}</DBox>
+                  <DBox as="p" color="muted" className={cn("text-sm")}>{feature.description}</DBox>
+                </DStack>
+              </DInline>
+            </DBox>
           ))}
-        </Box>
-      </Grid>
-    </Box>
+        </DBox>
+      </DGrid>
+    </DBox>
   );
 }

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 bvasilenko
-import { Box, Grid, Stack, cn } from "@booga/vui";
+import { cn } from "@booga/vui";
+import { DBox, DGrid, DStack } from "../../primitives";
 import { type BlockProps } from "../../types";
 import { themeStyle } from "../../theme";
 import { FaqSplitContentSchema, type FaqSplitContent } from "./schema";
@@ -9,33 +10,33 @@ export function FaqSplit({ content, theme }: BlockProps<FaqSplitContent>) {
   FaqSplitContentSchema.parse(content);
   const { heading, description, items } = content;
   return (
-    <Box as="section" aria-label={heading} style={themeStyle(theme)}>
-      <Grid columns={2} className={cn("max-w-6xl mx-auto px-6 py-16 gap-16 items-start")}>
-        <Stack className={cn("gap-4 sticky top-16")}>
-          <Box as="h2" className={cn("text-3xl font-bold tracking-tight")}>
+    <DBox as="section" aria-label={heading} style={themeStyle(theme)}>
+      <DGrid columns={2} px={6} py={16} gap={16} align="start" className={cn("max-w-6xl mx-auto")}>
+        <DStack gap={4} className={cn("sticky top-16")}>
+          <DBox as="h2" className={cn("text-3xl font-bold tracking-tight")}>
             {heading}
-          </Box>
+          </DBox>
           {description && (
-            <Box as="p" className={cn("text-[var(--v-color-muted)]")}>
+            <DBox as="p" color="muted">
               {description}
-            </Box>
+            </DBox>
           )}
-        </Stack>
-        <Box as="ul" className={cn("list-none m-0 p-0 flex flex-col gap-3")}>
+        </DStack>
+        <DBox as="ul" m={0} p={0} gap={3} display="flex" className={cn("list-none flex-col")}>
           {items.map((item, i) => (
-            <Box as="li" key={i}>
-              <Box as="details" className={cn("border rounded-lg p-4")}>
-                <Box as="summary" className={cn("font-semibold cursor-pointer list-none")}>
+            <DBox as="li" key={i}>
+              <DBox as="details" p={4} className={cn("border rounded-lg")}>
+                <DBox as="summary" className={cn("font-semibold cursor-pointer list-none")}>
                   {item.question}
-                </Box>
-                <Box as="p" className={cn("mt-3 text-[var(--v-color-muted)]")}>
+                </DBox>
+                <DBox as="p" color="muted" mt={3}>
                   {item.answer}
-                </Box>
-              </Box>
-            </Box>
+                </DBox>
+              </DBox>
+            </DBox>
           ))}
-        </Box>
-      </Grid>
-    </Box>
+        </DBox>
+      </DGrid>
+    </DBox>
   );
 }

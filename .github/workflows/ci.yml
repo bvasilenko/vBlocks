@@ -22,7 +22,7 @@ concurrency:
 
 jobs:
   verify:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64]
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -34,12 +34,7 @@ jobs:
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.1.x
-
-      - name: cache-bun
-        uses: actions/cache@v4
-        with:
-          path: ~/.bun/install/cache
-          key: bun-${{ runner.os }}-${{ hashFiles('bun.lockb', 'package.json') }}
+          no-cache: true
 
       - name: install
         run: bun install --frozen-lockfile
@@ -51,17 +46,10 @@ jobs:
         run: bun run lint
 
       - name: test
-        run: bun run test --coverage
+        run: bun run test
 
       - name: scrub
-        run: |
-          # Scrub gate uses the umbrella repo's tooling.
-          # Fetch the script standalone (the per-package repo doesn't carry it; one source of truth).
-          curl -fsSL \
-            https://raw.githubusercontent.com/<org>/<tooling-repo>/main/pre-commit-scrub.sh \
-            -o /tmp/scrub.sh
-          chmod +x /tmp/scrub.sh
-          bash /tmp/scrub.sh .
+        run: bash .github/scripts/scrub.sh .
 
       - name: build
         run: bun run build
@@ -77,7 +65,7 @@ jobs:
   publish:
     needs: verify
     if: startsWith(github.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64]
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -86,6 +74,7 @@ jobs:
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.1.x
+          no-cache: true
 
       - name: install
         run: bun install --frozen-lockfile
@@ -100,6 +89,6 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: publish
-        run: npm publish --access=public --provenance
+        run: npm publish --access=public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

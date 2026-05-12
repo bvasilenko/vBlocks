@@ -11,5 +11,5 @@ export function themeStyle(theme: ThemeOverride | undefined): CSSProperties | un
 }
 
 export function clampedGridCols(n: number): 1 | 2 | 3 | 4 | 5 | 6 {
-  return Math.max(1, Math.min(6, n)) as 1 | 2 | 3 | 4 | 5 | 6;
+  return Math.max(1, Math.min(6, Math.round(n))) as 1 | 2 | 3 | 4 | 5 | 6;
 }

@@ -4,6 +4,7 @@ import { describe, it, expect } from "vitest";
 import { createElement } from "react";
 import { render } from "@testing-library/react";
 import { registry } from "../src/registry";
+import { shapeOf } from "./helpers";
 
 function expectedRootTag(id: string): "section" | "footer" | "article" {
   if (id.startsWith("footer/")) return "footer";
@@ -35,6 +36,18 @@ describe("structure — semantic HTML and accessibility contracts", () => {
         });
       });
 
+      it("every <nav> element has a non-empty aria-label", () => {
+        const { container } = render(
+          createElement(meta.component, { content: meta.default })
+        );
+        container.querySelectorAll("nav").forEach((el) => {
+          expect(
+            el.getAttribute("aria-label"),
+            `${id}: <nav> missing aria-label`
+          ).toBeTruthy();
+        });
+      });
+
       it("every <img> element has a non-empty alt attribute", () => {
         const { container } = render(
           createElement(meta.component, { content: meta.default })
@@ -44,6 +57,43 @@ describe("structure — semantic HTML and accessibility contracts", () => {
             el.getAttribute("alt"),
             `${id}: <img> missing or empty alt`
           ).toBeTruthy();
+        });
+      });
+
+      it("every <a> element has a non-empty href attribute", () => {
+        const { container } = render(
+          createElement(meta.component, { content: meta.default })
+        );
+        container.querySelectorAll("a").forEach((el) => {
+          expect(
+            el.getAttribute("href"),
+            `${id}: <a> missing or empty href`
+          ).toBeTruthy();
+        });
+      });
+
+      it("renders a heading element when the schema declares a heading field", () => {
+        const shape = shapeOf(meta.schema);
+        if (!("heading" in shape)) return;
+        const { container } = render(
+          createElement(meta.component, { content: meta.default })
+        );
+        const headings = container.querySelectorAll("h1,h2,h3,h4,h5,h6");
+        expect(
+          headings.length,
+          `${id}: schema has 'heading' field but no heading element rendered`
+        ).toBeGreaterThan(0);
+      });
+
+      it("every rendered heading element has non-empty text content", () => {
+        const { container } = render(
+          createElement(meta.component, { content: meta.default })
+        );
+        container.querySelectorAll("h1,h2,h3,h4,h5,h6").forEach((el) => {
+          expect(
+            el.textContent?.trim().length,
+            `${id}: heading element has empty text content`
+          ).toBeGreaterThan(0);
         });
       });
     });

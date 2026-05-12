@@ -19,11 +19,7 @@ const EXPECTED_BLOCK_IDS: BlockId[] = [
 ];
 
 describe("registry — shape and completeness", () => {
-  it("has exactly 24 entries", () => {
-    expect(Object.keys(registry)).toHaveLength(24);
-  });
-
-  it("contains all expected BlockIds", () => {
+  it("contains exactly the expected set of BlockIds", () => {
     expect(Object.keys(registry).sort()).toEqual([...EXPECTED_BLOCK_IDS].sort());
   });
 
@@ -42,5 +38,28 @@ describe("registry — shape and completeness", () => {
       expect(meta.default, `${id}: default content must be defined`).toBeDefined();
       expect(typeof meta.component, `${id}: component must be a function`).toBe("function");
     }
+  });
+
+  it("every schema parses its own default content without throwing", () => {
+    for (const [id, meta] of Object.entries(registry)) {
+      expect(
+        () => meta.schema.parse(meta.default),
+        `${id}: schema.parse(default) must not throw`
+      ).not.toThrow();
+    }
+  });
+
+  it("contains exactly the expected 12 categories", () => {
+    const EXPECTED_CATEGORIES = [
+      "blog", "business", "cta", "faq", "features", "footer",
+      "gallery", "hero", "portfolio", "post", "team", "testimonial",
+    ];
+    const actualCategories = [...new Set(Object.keys(registry).map((id) => id.split("/")[0]))];
+    expect(actualCategories.sort()).toEqual(EXPECTED_CATEGORIES);
+  });
+
+  it("every BlockId in EXPECTED_BLOCK_IDS is unique (no duplicates in the constant)", () => {
+    const unique = new Set(EXPECTED_BLOCK_IDS);
+    expect(unique.size).toBe(EXPECTED_BLOCK_IDS.length);
   });
 });

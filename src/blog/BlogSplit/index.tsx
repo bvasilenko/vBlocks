@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 bvasilenko
-import { Badge, Box, Grid, Stack, cn } from "@booga/vui";
+import { Badge, cn } from "@booga/vui";
+import { DBox, DGrid, DStack } from "../../primitives";
 import { type BlockProps } from "../../types";
 import { themeStyle } from "../../theme";
 import { BlogSplitContentSchema, type BlogSplitContent } from "./schema";
@@ -10,51 +11,51 @@ export function BlogSplit({ content, theme }: BlockProps<BlogSplitContent>) {
   const { heading, posts } = content;
   const [featured, ...rest] = posts;
   return (
-    <Box as="section" aria-label={heading} style={themeStyle(theme)}>
-      <Stack className={cn("max-w-6xl mx-auto px-6 py-16 gap-10")}>
-        <Box as="h2" className={cn("text-3xl font-bold tracking-tight")}>{heading}</Box>
-        <Grid columns={2} className={cn("gap-8 items-start")}>
+    <DBox as="section" aria-label={heading} style={themeStyle(theme)}>
+      <DStack px={6} py={16} className={cn("max-w-6xl mx-auto gap-10")}>
+        <DBox as="h2" className={cn("text-3xl font-bold tracking-tight")}>{heading}</DBox>
+        <DGrid columns={2} gap={8} align="start">
           {featured && (
-            <Box as="article">
-              <Stack className={cn("gap-4")}>
-                <Box
+            <DBox as="article">
+              <DStack gap={4}>
+                <DBox
                   as="img"
                   src={featured.image.src}
                   alt={featured.image.alt}
                   className={cn("w-full rounded-lg object-cover aspect-video")}
                 />
-                <Stack className={cn("gap-2")}>
+                <DStack gap={2}>
                   {featured.category && <Badge variant="secondary">{featured.category}</Badge>}
-                  <Box as="h3" className={cn("text-xl font-semibold")}>{featured.title}</Box>
-                  <Box as="p" className={cn("text-[var(--v-color-muted)]")}>{featured.excerpt}</Box>
-                  <Box as="time" dateTime={featured.date} className={cn("text-xs text-[var(--v-color-muted)]")}>{featured.date}</Box>
-                </Stack>
-              </Stack>
-            </Box>
+                  <DBox as="h3" className={cn("text-xl font-semibold")}>{featured.title}</DBox>
+                  <DBox as="p" color="muted">{featured.excerpt}</DBox>
+                  <DBox as="time" dateTime={featured.date} color="muted" className={cn("text-xs")}>{featured.date}</DBox>
+                </DStack>
+              </DStack>
+            </DBox>
           )}
-          <Box as="ul" className={cn("list-none m-0 p-0 flex flex-col gap-6")}>
+          <DBox as="ul" m={0} p={0} gap={6} display="flex" className={cn("list-none flex-col")}>
             {rest.map((post, i) => (
-              <Box as="li" key={i}>
-                <Box as="article">
-                  <Grid columns={2} className={cn("gap-4 items-start")}>
-                    <Box
+              <DBox as="li" key={i}>
+                <DBox as="article">
+                  <DGrid columns={2} gap={4} align="start">
+                    <DBox
                       as="img"
                       src={post.image.src}
                       alt={post.image.alt}
                       className={cn("w-full rounded-md object-cover aspect-video")}
                     />
-                    <Stack className={cn("gap-1")}>
+                    <DStack gap={1}>
                       {post.category && <Badge variant="secondary">{post.category}</Badge>}
-                      <Box as="h3" className={cn("font-semibold leading-snug")}>{post.title}</Box>
-                      <Box as="time" dateTime={post.date} className={cn("text-xs text-[var(--v-color-muted)]")}>{post.date}</Box>
-                    </Stack>
-                  </Grid>
-                </Box>
-              </Box>
+                      <DBox as="h3" className={cn("font-semibold leading-snug")}>{post.title}</DBox>
+                      <DBox as="time" dateTime={post.date} color="muted" className={cn("text-xs")}>{post.date}</DBox>
+                    </DStack>
+                  </DGrid>
+                </DBox>
+              </DBox>
             ))}
-          </Box>
-        </Grid>
-      </Stack>
-    </Box>
+          </DBox>
+        </DGrid>
+      </DStack>
+    </DBox>
   );
 }

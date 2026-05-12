@@ -1,37 +1,27 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 bvasilenko
 import { describe, it, expect } from "vitest";
-import { z } from "zod";
 import { registry } from "../src/registry";
-
-function shapeOf(schema: z.ZodTypeAny): Record<string, z.ZodTypeAny> {
-  return (schema as z.AnyZodObject).shape as Record<string, z.ZodTypeAny>;
-}
-
-function requiredKeysOf(shape: Record<string, z.ZodTypeAny>): string[] {
-  return Object.keys(shape).filter((k) => !shape[k].safeParse(undefined).success);
-}
-
-function firstKeyWhere(
-  obj: Record<string, unknown>,
-  predicate: (v: unknown) => boolean
-): string | undefined {
-  return Object.keys(obj).find((k) => predicate(obj[k]));
-}
-
-function withoutKey(obj: Record<string, unknown>, key: string): Record<string, unknown> {
-  return Object.fromEntries(Object.entries(obj).filter(([k]) => k !== key));
-}
+import { shapeOf, requiredKeysOf, optionalKeysOf, isPlainObject, withoutKey } from "./helpers";
 
 describe("schema — validation contract per block", () => {
   for (const [id, meta] of Object.entries(registry)) {
     const shape = shapeOf(meta.schema);
     const def = meta.default as Record<string, unknown>;
     const requiredKeys = requiredKeysOf(shape);
+    const optionalKeys = optionalKeysOf(shape);
 
     describe(id, () => {
       it("round-trip: parse(default) returns structurally equal value", () => {
         expect(meta.schema.parse(meta.default)).toEqual(meta.default);
+      });
+
+      it("accepts parse with all optional fields absent", () => {
+        if (optionalKeys.length === 0) return;
+        const withoutOptionals = Object.fromEntries(
+          Object.entries(def).filter(([k]) => !optionalKeys.includes(k))
+        );
+        expect(meta.schema.safeParse(withoutOptionals).success).toBe(true);
       });
 
       it("rejects any extra top-level field", () => {
@@ -47,32 +37,69 @@ describe("schema — validation contract per block", () => {
         }
       });
 
-      const strKey = firstKeyWhere(def, (v) => typeof v === "string");
-      if (strKey !== undefined) {
-        it(`rejects wrong type for string field "${strKey}"`, () => {
-          expect(meta.schema.safeParse({ ...def, [strKey]: 42 }).success).toBe(false);
-        });
-      }
-
-      const arrKey = firstKeyWhere(def, (v) => Array.isArray(v));
-      if (arrKey !== undefined) {
-        it(`rejects empty array for min-1 field "${arrKey}"`, () => {
-          expect(meta.schema.safeParse({ ...def, [arrKey]: [] }).success).toBe(false);
-        });
-      }
-
-      const objKey = firstKeyWhere(
-        def,
-        (v) => v !== null && typeof v === "object" && !Array.isArray(v)
-      );
-      if (objKey !== undefined) {
-        it(`rejects extra field inside nested object "${objKey}"`, () => {
-          const nested = def[objKey] as Record<string, unknown>;
+      it("rejects a non-string value for every top-level string field", () => {
+        const strKeys = Object.keys(def).filter((k) => typeof def[k] === "string");
+        for (const key of strKeys) {
           expect(
-            meta.schema.safeParse({ ...def, [objKey]: { ...nested, __unexpected__: 1 } }).success
+            meta.schema.safeParse({ ...def, [key]: 42 }).success,
+            `integer for string field "${key}" must fail validation`
           ).toBe(false);
-        });
-      }
+        }
+      });
+
+      it("rejects non-string values for string fields inside nested objects", () => {
+        const objKeys = Object.keys(def).filter((k) => isPlainObject(def[k]));
+        for (const objKey of objKeys) {
+          const nested = def[objKey] as Record<string, unknown>;
+          const nestedStrKeys = Object.keys(nested).filter((k) => typeof nested[k] === "string");
+          for (const strKey of nestedStrKeys) {
+            expect(
+              meta.schema.safeParse({ ...def, [objKey]: { ...nested, [strKey]: 42 } }).success,
+              `integer for nested string "${objKey}.${strKey}" must fail validation`
+            ).toBe(false);
+          }
+        }
+      });
+
+      it("rejects an empty array for every required array field", () => {
+        const requiredArrKeys = requiredKeys.filter((k) => Array.isArray(def[k]));
+        for (const key of requiredArrKeys) {
+          expect(
+            meta.schema.safeParse({ ...def, [key]: [] }).success,
+            `empty array for required field "${key}" must fail validation`
+          ).toBe(false);
+        }
+      });
+
+      it("rejects a non-array value for every array field", () => {
+        const arrKeys = Object.keys(def).filter((k) => Array.isArray(def[k]));
+        for (const key of arrKeys) {
+          expect(
+            meta.schema.safeParse({ ...def, [key]: "not-an-array" }).success,
+            `string for array field "${key}" must fail validation`
+          ).toBe(false);
+        }
+      });
+
+      it("rejects null for every nested object field", () => {
+        const objKeys = Object.keys(def).filter((k) => isPlainObject(def[k]));
+        for (const key of objKeys) {
+          expect(
+            meta.schema.safeParse({ ...def, [key]: null }).success,
+            `null for nested object field "${key}" must fail validation`
+          ).toBe(false);
+        }
+      });
+
+      it("rejects a primitive for every nested object field", () => {
+        const objKeys = Object.keys(def).filter((k) => isPlainObject(def[k]));
+        for (const key of objKeys) {
+          expect(
+            meta.schema.safeParse({ ...def, [key]: "not-an-object" }).success,
+            `string for object field "${key}" must fail validation`
+          ).toBe(false);
+        }
+      });
     });
   }
 });

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 bvasilenko
-import { Avatar, AvatarFallback, AvatarImage, Box, Card, CardContent, Grid, Inline, Stack, cn } from "@booga/vui";
+import { Avatar, AvatarFallback, AvatarImage, Card, CardContent, cn } from "@booga/vui";
+import { DBox, DGrid, DInline, DStack } from "../../primitives";
 import { type BlockProps } from "../../types";
 import { themeStyle } from "../../theme";
 import { TestimonialGridContentSchema, type TestimonialGridContent } from "./schema";
@@ -9,37 +10,37 @@ export function TestimonialGrid({ content, theme }: BlockProps<TestimonialGridCo
   TestimonialGridContentSchema.parse(content);
   const { heading, items } = content;
   return (
-    <Box as="section" aria-label={heading} style={themeStyle(theme)}>
-      <Stack className={cn("max-w-5xl mx-auto px-6 py-16 gap-10")}>
-        <Box as="h2" className={cn("text-3xl font-bold tracking-tight text-center")}>{heading}</Box>
-        <Grid columns={3} className={cn("gap-6")}>
+    <DBox as="section" aria-label={heading} style={themeStyle(theme)}>
+      <DStack px={6} py={16} className={cn("max-w-5xl mx-auto gap-10")}>
+        <DBox as="h2" className={cn("text-3xl font-bold tracking-tight text-center")}>{heading}</DBox>
+        <DGrid columns={3} gap={6}>
           {items.map((item, i) => (
             <Card key={i}>
               <CardContent>
-                <Stack className={cn("gap-4 pt-4")}>
-                  <Box as="blockquote" className={cn("text-sm leading-relaxed")}>
-                    <Box as="p">{item.quote}</Box>
-                  </Box>
-                  <Inline className={cn("gap-3 items-center")}>
+                <DStack gap={4} pt={4}>
+                  <DBox as="blockquote" className={cn("text-sm leading-relaxed")}>
+                    <DBox as="p">{item.quote}</DBox>
+                  </DBox>
+                  <DInline gap={3} align="center">
                     {item.avatar && (
                       <Avatar>
                         <AvatarImage src={item.avatar.src} alt={item.avatar.alt} />
                         <AvatarFallback>{item.author.slice(0, 2).toUpperCase()}</AvatarFallback>
                       </Avatar>
                     )}
-                    <Stack className={cn("gap-0.5")}>
-                      <Box as="cite" className={cn("text-sm font-semibold not-italic")}>{item.author}</Box>
-                      <Box as="span" className={cn("text-xs text-[var(--v-color-muted)]")}>
+                    <DStack className={cn("gap-0.5")}>
+                      <DBox as="cite" className={cn("text-sm font-semibold not-italic")}>{item.author}</DBox>
+                      <DBox as="span" color="muted" className={cn("text-xs")}>
                         {item.role}{item.company ? `, ${item.company}` : ""}
-                      </Box>
-                    </Stack>
-                  </Inline>
-                </Stack>
+                      </DBox>
+                    </DStack>
+                  </DInline>
+                </DStack>
               </CardContent>
             </Card>
           ))}
-        </Grid>
-      </Stack>
-    </Box>
+        </DGrid>
+      </DStack>
+    </DBox>
   );
 }
