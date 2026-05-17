@@ -1,12 +1,12 @@
 {
-  "lockfileVersion": 0,
+  "lockfileVersion": 1,
   "workspaces": {
     "": {
       "name": "@booga/vblocks",
       "dependencies": {
         "@booga/vdsl": "^0.1.0",
         "@booga/vhooks": "^0.1.0",
-        "@booga/vui": "^0.1.0",
+        "@booga/vui": "^0.2.0",
         "zod": "^3.0.0",
       },
       "devDependencies": {
@@ -88,7 +88,7 @@
 
     "@booga/vtheme": ["@booga/vtheme@0.1.0", "", { "dependencies": { "zod": "^3.0.0" } }, "sha512-jjmSieQ3ji+mt1oFKWX5cvxzijb+dKUiTeCzQtJ3MauCFUZu3xJPofFqCdYeKwnRx3NKXyM5KwlJc3sCV6oazg=="],
 
-    "@booga/vui": ["@booga/vui@0.1.0", "", { "dependencies": { "@booga/vtheme": "^0.1.0", "@radix-ui/react-slot": "^1.0.0", "class-variance-authority": "^0.7.0", "clsx": "^2.0.0", "lucide-react": "^1.0.0", "tailwind-merge": "^2.0.0" }, "peerDependencies": { "react": "^18.0.0", "react-dom": "^18.0.0", "tailwindcss": "^3.0.0" } }, "sha512-mDkk1oNOD9Wn24sPvFnY8rDO0Yiy8iI0rnrdp4mZybXIDzrwL8dh4elMo9W6Tyo91cWYUzTexLVdnFKZK7y1Xg=="],
+    "@booga/vui": ["@booga/vui@0.2.0", "", { "dependencies": { "@booga/vtheme": "^0.2.0", "@radix-ui/react-slot": "^1.0.0", "class-variance-authority": "^0.7.0", "clsx": "^2.0.0", "lucide-react": "^1.0.0", "tailwind-merge": "^2.0.0" }, "peerDependencies": { "react": "^18.0.0", "react-dom": "^18.0.0", "tailwindcss": "^3.4.0" } }, "sha512-I8IUuGcR53q/3eAnvpcJ3ck6X1NkNUns15hxpaWV7g+XVFIhBvif5+CX5KJ9i3XFhm/UgBF2RLT3+Teo7iaIFg=="],
 
     "@csstools/color-helpers": ["@csstools/color-helpers@5.1.0", "", {}, "sha512-S11EXWJyy0Mz5SYvRmY8nJYTFFd1LCNV+7cXyAgQtOOuzb4EsgfqDufL+9esx72/eLhsRdGZwaldu/h+E4t4BA=="],
 
@@ -893,6 +893,8 @@
     "zod": ["zod@3.25.76", "", {}, "sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ=="],
 
     "@asamuzakjp/css-color/lru-cache": ["lru-cache@10.4.3", "", {}, "sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ=="],
+
+    "@booga/vui/@booga/vtheme": ["@booga/vtheme@0.2.0", "", { "dependencies": { "zod": "^3.0.0" }, "peerDependencies": { "tailwindcss": "^3.4.0" } }, "sha512-R+f/2xgJpi5MPPQa5g7UyuNVDelI31786OOEwr5PPaIIuMdTYvVd0Pl08k86qjJ9OooZNjUwuw+M7ASOf906Vg=="],
 
     "@eslint-community/eslint-utils/eslint-visitor-keys": ["eslint-visitor-keys@3.4.3", "", {}, "sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag=="],
 
