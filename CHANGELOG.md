@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1] - 2026-05-18
+
+### Fixed
+
+- Grid/Split block section containers used inconsistent max-widths (`max-w-5xl` on 6 blocks, `max-w-6xl` on the rest), so a page stacking different blocks showed misaligned content columns. All full-width Grid/Split blocks now share `max-w-6xl`. (Centered/Post blocks keep their intentionally narrower measure.)
+
 ## [0.3.0] - 2026-05-18
 
 ### Added

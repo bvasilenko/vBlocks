@@ -11,7 +11,7 @@ export function BusinessGrid({ content, theme }: BlockProps<BusinessGridContent>
   const { heading, services } = content;
   return (
     <DBox as="section" aria-label={heading} style={themeStyle(theme)}>
-      <DStack px={6} py={16} className={cn("max-w-5xl mx-auto gap-10")}>
+      <DStack px={6} py={16} className={cn("max-w-6xl mx-auto gap-10")}>
         <DBox as="h2" className={cn("text-3xl font-bold tracking-tight text-center")}>{heading}</DBox>
         <DGrid columns={2} gap={6}>
           {services.map((service, i) => (

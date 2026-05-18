@@ -11,7 +11,7 @@ export function TestimonialSplit({ content, theme }: BlockProps<TestimonialSplit
   const { quote, author, role, company, avatar } = content;
   return (
     <DBox as="section" aria-label="Testimonial" style={themeStyle(theme)}>
-      <DGrid columns={2} px={6} gap={16} align="center" className={cn("max-w-5xl mx-auto py-20")}>
+      <DGrid columns={2} px={6} gap={16} align="center" className={cn("max-w-6xl mx-auto py-20")}>
         <DBox
           as="blockquote"
           className={cn("text-2xl font-medium leading-relaxed")}
