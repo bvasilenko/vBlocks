@@ -1,6 +1,6 @@
 {
   "name": "@booga/vblocks",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Composed section blocks: hero, CTA, FAQ, footer, gallery, portfolio, post, team, testimonial, blog, business, features. Schema-validated content, vUi primitives, DSL-styled.",
   "type": "module",
   "sideEffects": false,
@@ -72,7 +72,8 @@
       "types": "./dist/features/index.d.ts",
       "import": "./dist/features/index.js",
       "require": "./dist/features/index.cjs"
-    }
+    },
+    "./styles.css": "./dist/styles.css"
   },
   "files": [
     "dist/**/*",
@@ -82,16 +83,17 @@
   ],
   "scripts": {
     "dev": "tsup --watch",
-    "build": "tsup",
+    "build": "tsup && npm run build:css",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "vitest run --coverage",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "build:css": "tailwindcss -i ./styles-entry.css -c ./tailwind.config.js -o ./dist/styles.css --minify"
   },
   "dependencies": {
     "@booga/vdsl": "^0.1.0",
     "@booga/vhooks": "^0.1.0",
-    "@booga/vui": "^0.2.0",
+    "@booga/vui": "^0.3.0",
     "zod": "^3.0.0"
   },
   "peerDependencies": {
@@ -99,6 +101,7 @@
     "react-dom": "^18.0.0"
   },
   "devDependencies": {
+    "@booga/vtheme": "^0.2.1",
     "@eslint/js": "^9.0.0",
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^16.0.0",
@@ -113,6 +116,7 @@
     "jsdom": "^25.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "tailwindcss": "^3.4.0",
     "tsup": "^8.0.0",
     "typescript": "^5.0.0",
     "typescript-eslint": "^8.0.0",
