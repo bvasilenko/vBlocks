@@ -1,6 +1,6 @@
 {
   "name": "@booga/vblocks",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Composed section blocks: hero, CTA, FAQ, footer, gallery, portfolio, post, team, testimonial, blog, business, features. Schema-validated content, vUi primitives, DSL-styled.",
   "type": "module",
   "sideEffects": false,

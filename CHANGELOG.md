@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.2] - 2026-05-18
+
+### Fixed
+
+- Category `<Badge>` in BlogGrid, BlogSplit, PortfolioGrid, PortfolioSplit, PostCentered, and PostSplit stretched to a full-width bar: each sat in a flex-column `DStack` whose default `align-items: stretch` widened it. Badges now carry `self-start`, rendering as content-width chips.
+- BlogGrid default content: the middle post lacked a `category`, so its card rendered without the badge the sibling cards had. All default posts now carry a category for a consistent three-card grid.
+
 ## [0.3.1] - 2026-05-18
 
 ### Fixed

@@ -12,7 +12,7 @@ export function PostCentered({ content, theme }: BlockProps<PostCenteredContent>
   return (
     <DBox as="article" style={themeStyle(theme)}>
       <DStack px={6} py={16} gap={6} className={cn("max-w-2xl mx-auto")}>
-        {category && <Badge variant="secondary">{category}</Badge>}
+        {category && <Badge variant="secondary" className={cn("self-start")}>{category}</Badge>}
         <DBox as="h1" className={cn("text-4xl font-bold tracking-tight leading-snug")}>{title}</DBox>
         <DInline gap={2} color="muted" className={cn("text-sm")}>
           <DBox as="span">{author}</DBox>

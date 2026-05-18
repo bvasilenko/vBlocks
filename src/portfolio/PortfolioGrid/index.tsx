@@ -22,7 +22,7 @@ export function PortfolioGrid({ content, theme }: BlockProps<PortfolioGridConten
             />
             <CardContent>
               <DStack gap={2} pt={2}>
-                <Badge variant="secondary">{item.category}</Badge>
+                <Badge variant="secondary" className={cn("self-start")}>{item.category}</Badge>
                 <DBox as="h3" className={cn("font-semibold text-lg")}>{item.title}</DBox>
               </DStack>
             </CardContent>

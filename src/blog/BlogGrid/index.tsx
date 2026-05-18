@@ -25,7 +25,7 @@ export function BlogGrid({ content, theme }: BlockProps<BlogGridContent>) {
                 />
                 <CardContent>
                   <DStack gap={2} pt={2}>
-                    {post.category && <Badge variant="secondary">{post.category}</Badge>}
+                    {post.category && <Badge variant="secondary" className={cn("self-start")}>{post.category}</Badge>}
                     <DBox as="h3" className={cn("font-semibold leading-snug")}>{post.title}</DBox>
                     <DBox as="p" color="muted" className={cn("text-sm")}>{post.excerpt}</DBox>
                     <DBox as="time" dateTime={post.date} color="muted" className={cn("text-xs")}>{post.date}</DBox>
