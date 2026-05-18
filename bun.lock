@@ -4,7 +4,7 @@
     "": {
       "name": "@booga/vblocks",
       "dependencies": {
-        "@booga/vdsl": "^0.1.0",
+        "@booga/vdsl": "^0.2.0",
         "@booga/vhooks": "^0.1.0",
         "@booga/vui": "^0.3.0",
         "zod": "^3.0.0",
@@ -84,7 +84,7 @@
 
     "@babel/types": ["@babel/types@7.29.0", "", { "dependencies": { "@babel/helper-string-parser": "^7.27.1", "@babel/helper-validator-identifier": "^7.28.5" } }, "sha512-LwdZHpScM4Qz8Xw2iKSzS+cfglZzJGvofQICy7W7v4caru4EaAmyUuO6BGrbyQ2mYV11W0U8j5mBhd14dd3B0A=="],
 
-    "@booga/vdsl": ["@booga/vdsl@0.1.1", "", { "dependencies": { "@booga/vtheme": "^0.1.0", "zod": "^3.0.0" }, "peerDependencies": { "react": "^18.0.0", "react-dom": "^18.0.0" } }, "sha512-4AQJZ0Ws+fZU6Dm7Hqv3m6T3BYPKyMttkJBsihBX8kOwzBrjjJZuN2ktJFhXisHfGxZjWX1olTSNwApyjS7UvQ=="],
+    "@booga/vdsl": ["@booga/vdsl@0.2.0", "", { "dependencies": { "@booga/vtheme": "^0.1.0", "zod": "^3.0.0" }, "peerDependencies": { "react": "^18.0.0", "react-dom": "^18.0.0" } }, "sha512-Kq5c95ORD13Jvmjmdcnr2RQUSbkXuxD5u9gyXto2WyxJ10FiBFsw97p3RqKmy2hLk6o4lY6UsoJs6hU7q94wnw=="],
 
     "@booga/vhooks": ["@booga/vhooks@0.1.0", "", { "peerDependencies": { "react": "^18.0.0" } }, "sha512-vCskDaf1itqoxOsnb7ketvFAmycNUBFSIkL4efYNvdhhUoc4noXpEUQb0vLs2gQf/6IZ3BsmlXaELAst6YZfRg=="],
 
