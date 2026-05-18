@@ -14,7 +14,7 @@ export function PostSplit({ content, theme }: BlockProps<PostSplitContent>) {
       <DGrid columns={2} px={6} py={16} gap={16} align="start" className={cn("max-w-6xl mx-auto")}>
         <DStack gap={6} className={cn("sticky top-16")}>
           {category && <Badge variant="secondary" className={cn("self-start")}>{category}</Badge>}
-          <DBox as="h1" className={cn("text-3xl font-bold tracking-tight leading-snug")}>{title}</DBox>
+          <DBox as="h1" className={cn("text-4xl font-bold tracking-tight leading-snug")}>{title}</DBox>
           <Separator />
           <DInline gap={2} color="muted" className={cn("text-sm")}>
             <DBox as="span">{author}</DBox>

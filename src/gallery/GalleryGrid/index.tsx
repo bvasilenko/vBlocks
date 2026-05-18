@@ -11,7 +11,7 @@ export function GalleryGrid({ content, theme }: BlockProps<GalleryGridContent>) 
   const { items } = content;
   return (
     <DBox as="section" aria-label="Gallery" style={themeStyle(theme)}>
-      <DGrid columns={3} px={6} py={12} gap={4} className={cn("max-w-6xl mx-auto")}>
+      <DGrid columns={3} px={6} py={16} gap={4} className={cn("max-w-6xl mx-auto")}>
         {items.map((item, i) => (
           <DBox as="figure" key={i} m={0}>
             <DBox

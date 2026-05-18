@@ -17,7 +17,7 @@ export function TeamGrid({ content, theme }: BlockProps<TeamGridContent>) {
           {members.map((member, i) => (
             <Card key={i}>
               <CardContent>
-                <DStack gap={3} align="center" pt={4} className={cn("text-center")}>
+                <DStack gap={4} align="center" py={6} className={cn("text-center")}>
                   <Avatar className={cn("w-16 h-16")}>
                     <AvatarImage src={member.avatar.src} alt={member.avatar.alt} />
                     <AvatarFallback>{member.name.slice(0, 2).toUpperCase()}</AvatarFallback>

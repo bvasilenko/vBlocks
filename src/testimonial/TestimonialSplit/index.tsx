@@ -26,16 +26,9 @@ export function TestimonialSplit({ content, theme }: BlockProps<TestimonialSplit
               <AvatarFallback>{author.slice(0, 2).toUpperCase()}</AvatarFallback>
             </Avatar>
           )}
-          <DInline gap={1} color="muted" className={cn("text-sm")}>
+          <DInline gap={0} color="muted" className={cn("text-sm")}>
             <DBox as="cite" color="fg" className={cn("font-semibold not-italic")}>{author}</DBox>
-            <DBox as="span">,</DBox>
-            <DBox as="span">{role}</DBox>
-            {company && (
-              <>
-                <DBox as="span">at</DBox>
-                <DBox as="span">{company}</DBox>
-              </>
-            )}
+            <DBox as="span">{`, ${company ? `${role} at ${company}` : role}`}</DBox>
           </DInline>
         </DStack>
       </DGrid>

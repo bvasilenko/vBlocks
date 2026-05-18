@@ -14,7 +14,7 @@ export function BusinessSplit({ content, theme }: BlockProps<BusinessSplitConten
       <DGrid columns={2} px={6} py={16} gap={16} align="center" className={cn("max-w-6xl mx-auto")}>
         <DStack gap={6}>
           <DStack gap={2}>
-            <DBox as="h2" className={cn("text-4xl font-bold tracking-tight")}>{name}</DBox>
+            <DBox as="h2" className={cn("text-3xl font-bold tracking-tight")}>{name}</DBox>
             <DBox as="p" color="accent" className={cn("text-xl")}>{tagline}</DBox>
           </DStack>
           <DBox as="p" color="muted" className={cn("text-lg leading-relaxed")}>{description}</DBox>

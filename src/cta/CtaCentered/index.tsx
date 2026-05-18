@@ -12,7 +12,7 @@ export function CtaCentered({ content, theme }: BlockProps<CtaCenteredContent>) 
   return (
     <DBox as="section" aria-label={heading} style={themeStyle(theme)}>
       <DStack px={6} gap={8} align="center" className={cn("max-w-2xl mx-auto text-center py-20")}>
-        <DBox as="h2" className={cn("text-4xl font-bold tracking-tight")}>
+        <DBox as="h2" className={cn("text-3xl font-bold tracking-tight")}>
           {heading}
         </DBox>
         <DBox as="p" color="muted" className={cn("text-lg")}>

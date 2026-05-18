@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.3] - 2026-05-18
+
+### Fixed
+
+- Precompiled `dist/styles.css` omitted most of the spacing scale (`gap-6`,
+  `px-6`, `py-16`, …) and every color-role utility. `dsl()` builds those class
+  names at runtime via template literals, which Tailwind's content scanner
+  cannot see, so the precompiled build dropped them — blocks rendered with
+  collapsed gaps and padding, and all `color="muted"` text fell back to black
+  instead of muted grey. `tailwind.config.js` now safelists `@booga/vdsl`'s
+  `dslSafelist`; the styled-render gate asserts full coverage so it cannot
+  regress. Requires `@booga/vdsl ^0.2.0`, whose color tokens also now resolve
+  through vTheme's role contract (`text-muted-foreground`, `bg-accent`, …)
+  instead of invalid raw-channel `var()` references.
+- BlogSplit default content: the first secondary post lacked a `category`, so
+  its card rendered without the badge its sibling cards had.
+- TestimonialSplit attribution rendered "Jordan Ellis , Product Lead at Acme"
+  with a stray space before the comma — the comma was a separately gapped span.
+  Attribution is now a single run: "Jordan Ellis, Product Lead at Acme".
+
+### Changed
+
+- Unified the type hierarchy across all blocks. Section headings were a mix of
+  `text-3xl` and `text-4xl`; they are now uniformly `text-3xl` (`text-4xl` for
+  the PostSplit article `<h1>`, `text-5xl` for hero `<h1>`). Card/feature `<h3>`
+  titles that carried no size class — and so rendered at body size — are now
+  `text-lg`, giving every block a consistent heading→subhead→body progression.
+- HeroCentered description lowered from `text-xl` to `text-lg`. In vTheme's type
+  scale `text-xl` carries `font-weight: 600`, so the lead paragraph rendered as
+  a bold line competing with the heading; `text-lg` (weight 500) reads as a
+  proper subordinate lead.
+- Unified section vertical rhythm: content blocks pad `py-16`, hero blocks
+  `py-24`, footers `py-12`. GalleryGrid and PortfolioGrid (`py-12`) and HeroSplit
+  (`py-16`) previously broke the scheme.
+- TeamGrid member cards: avatar/name/role were jammed to the card top with dead
+  space below (`pt-4` + `gap-3`); now balanced (`py-6` + `gap-4`).
+
 ## [0.3.2] - 2026-05-18
 
 ### Fixed

@@ -28,7 +28,7 @@ export function FeaturesSplit({ content, theme }: BlockProps<FeaturesSplitConten
                   </DBox>
                 )}
                 <DStack gap={1}>
-                  <DBox as="h3" className={cn("font-semibold")}>{feature.title}</DBox>
+                  <DBox as="h3" className={cn("text-lg font-semibold")}>{feature.title}</DBox>
                   <DBox as="p" color="muted" className={cn("text-sm")}>{feature.description}</DBox>
                 </DStack>
               </DInline>

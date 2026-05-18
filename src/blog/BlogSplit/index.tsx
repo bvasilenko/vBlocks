@@ -26,7 +26,7 @@ export function BlogSplit({ content, theme }: BlockProps<BlogSplitContent>) {
                 />
                 <DStack gap={2}>
                   {featured.category && <Badge variant="secondary" className={cn("self-start")}>{featured.category}</Badge>}
-                  <DBox as="h3" className={cn("text-xl font-semibold")}>{featured.title}</DBox>
+                  <DBox as="h3" className={cn("text-lg font-semibold")}>{featured.title}</DBox>
                   <DBox as="p" color="muted">{featured.excerpt}</DBox>
                   <DBox as="time" dateTime={featured.date} color="muted" className={cn("text-xs")}>{featured.date}</DBox>
                 </DStack>
@@ -46,7 +46,7 @@ export function BlogSplit({ content, theme }: BlockProps<BlogSplitContent>) {
                     />
                     <DStack gap={1}>
                       {post.category && <Badge variant="secondary" className={cn("self-start")}>{post.category}</Badge>}
-                      <DBox as="h3" className={cn("font-semibold leading-snug")}>{post.title}</DBox>
+                      <DBox as="h3" className={cn("text-lg font-semibold leading-snug")}>{post.title}</DBox>
                       <DBox as="time" dateTime={post.date} color="muted" className={cn("text-xs")}>{post.date}</DBox>
                     </DStack>
                   </DGrid>

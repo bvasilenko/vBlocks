@@ -20,7 +20,7 @@ export function HeroCentered({ content, theme }: BlockProps<HeroCenteredContent>
         <DBox as="h1" className={cn("text-5xl font-bold tracking-tight leading-tight")}>
           {heading}
         </DBox>
-        <DBox as="p" color="muted" className={cn("text-xl")}>
+        <DBox as="p" color="muted" className={cn("text-lg")}>
           {description}
         </DBox>
         <DInline wrap gap={3} justify="center">
