@@ -13,7 +13,7 @@ export function BlogGrid({ content, theme }: BlockProps<BlogGridContent>) {
     <DBox as="section" aria-label={heading} style={themeStyle(theme)}>
       <DStack px={6} py={16} className={cn("max-w-6xl mx-auto gap-10")}>
         <DBox as="h2" className={cn("text-3xl font-bold tracking-tight")}>{heading}</DBox>
-        <DGrid columns={3} gap={6}>
+        <DGrid gap={6} className={cn("grid-cols-1 sm:grid-cols-2 lg:grid-cols-3")}>
           {posts.map((post, i) => (
             <Card key={i}>
               <DBox as="article">

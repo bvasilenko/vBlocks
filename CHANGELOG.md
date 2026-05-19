@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.4] - 2026-05-19
+
+### Fixed
+
+- The six Grid blocks (TeamGrid, FaqGrid, TestimonialGrid, BlogGrid, BusinessGrid,
+  FeaturesGrid) used a fixed column count — `grid-cols-3` / `grid-cols-2` — with
+  no responsive breakpoints. On a 390px phone the columns collapsed to ~98px:
+  card titles wrapped one word per line and clipped past the card edge, and
+  BlogGrid/FeaturesGrid overflowed the viewport horizontally. The grids now
+  collapse responsively — `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3` for the
+  3-column blocks, `grid-cols-1 sm:grid-cols-2` for the 2-column blocks
+  (FaqGrid, BusinessGrid). Desktop layout is unchanged.
+
 ## [0.3.3] - 2026-05-18
 
 ### Fixed

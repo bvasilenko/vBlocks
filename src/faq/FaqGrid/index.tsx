@@ -15,7 +15,7 @@ export function FaqGrid({ content, theme }: BlockProps<FaqGridContent>) {
         <DBox as="h2" className={cn("text-3xl font-bold tracking-tight text-center")}>
           {heading}
         </DBox>
-        <DGrid columns={2} gap={4}>
+        <DGrid gap={4} className={cn("grid-cols-1 sm:grid-cols-2")}>
           {items.map((item, i) => (
             <Card key={i}>
               <CardHeader>
