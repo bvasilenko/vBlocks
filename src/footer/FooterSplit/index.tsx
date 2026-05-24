@@ -11,7 +11,7 @@ export function FooterSplit({ content, theme }: BlockProps<FooterSplitContent>) 
   const { brand, links, copyright } = content;
   return (
     <DBox as="footer" style={themeStyle(theme)}>
-      <DGrid columns={2} px={6} py={12} gap={8} align="start" className={cn("max-w-6xl mx-auto")}>
+      <DGrid px={6} py={12} gap={8} align="start" className={cn("max-w-6xl mx-auto grid-cols-1 lg:grid-cols-2")}>
         <DStack gap={2}>
           <DBox as="p" className={cn("font-bold text-lg")}>{brand.name}</DBox>
           {brand.tagline && (

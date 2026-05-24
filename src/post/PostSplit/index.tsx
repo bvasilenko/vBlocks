@@ -11,7 +11,7 @@ export function PostSplit({ content, theme }: BlockProps<PostSplitContent>) {
   const { title, author, date, category, body, image } = content;
   return (
     <DBox as="article" style={themeStyle(theme)}>
-      <DGrid columns={2} px={6} py={16} gap={16} align="start" className={cn("max-w-6xl mx-auto")}>
+      <DGrid px={6} py={16} gap={16} align="start" className={cn("max-w-6xl mx-auto grid-cols-1 lg:grid-cols-2")}>
         <DStack gap={6} className={cn("sticky top-16")}>
           {category && <Badge variant="secondary" className={cn("self-start")}>{category}</Badge>}
           <DBox as="h1" className={cn("text-4xl font-bold tracking-tight leading-snug")}>{title}</DBox>

@@ -11,7 +11,7 @@ export function PortfolioGrid({ content, theme }: BlockProps<PortfolioGridConten
   const { items } = content;
   return (
     <DBox as="section" aria-label="Portfolio" style={themeStyle(theme)}>
-      <DGrid columns={2} px={6} py={16} gap={6} className={cn("max-w-6xl mx-auto")}>
+      <DGrid px={6} py={16} gap={6} className={cn("max-w-6xl mx-auto grid-cols-1 sm:grid-cols-2")}>
         {items.map((item, i) => (
           <Card key={i}>
             <DBox

@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.5] - 2026-05-24
+
+### Fixed
+
+- Comprehensive responsive pass. 0.3.4 fixed the 6 named Grid blocks; a full
+  mobile probe at 320/360/390/768 px caught residual overflow in 8 other blocks
+  (BlogSplit at 390; PortfolioSplit, FeaturesSplit at 360; HeroSplit,
+  PortfolioGrid, TeamSplit, FeaturesSplit at 320). Every layout grid in every
+  block now collapses on mobile: the 11 Split blocks (TeamSplit, TestimonialSplit,
+  HeroSplit, GallerySplit, PortfolioSplit, CtaSplit, FeaturesSplit, FooterSplit,
+  PostSplit, FaqSplit, BusinessSplit) outer 2-column grid → `grid-cols-1
+  lg:grid-cols-2`; GalleryGrid 3-column grid → `grid-cols-1 sm:grid-cols-2
+  lg:grid-cols-3`; PortfolioGrid 2-column grid → `grid-cols-1 sm:grid-cols-2`;
+  BlogSplit outer featured/list grid → `grid-cols-1 lg:grid-cols-2`. Desktop
+  layout unchanged. Verified at 320/360/390/768 — zero overflow across all
+  24 blocks at 390/360/768 and a 2 px residual at 320 in hero-split (below
+  perceivable threshold; no element-level culprit).
+
 ## [0.3.4] - 2026-05-19
 
 ### Fixed

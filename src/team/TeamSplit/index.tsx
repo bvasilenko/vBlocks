@@ -11,7 +11,7 @@ export function TeamSplit({ content, theme }: BlockProps<TeamSplitContent>) {
   const { heading, description, members } = content;
   return (
     <DBox as="section" aria-label={heading} style={themeStyle(theme)}>
-      <DGrid columns={2} px={6} py={16} gap={16} align="start" className={cn("max-w-6xl mx-auto")}>
+      <DGrid px={6} py={16} gap={16} align="start" className={cn("max-w-6xl mx-auto grid-cols-1 lg:grid-cols-2")}>
         <DStack gap={4} className={cn("sticky top-16")}>
           <DBox as="h2" className={cn("text-3xl font-bold tracking-tight")}>{heading}</DBox>
           {description && (

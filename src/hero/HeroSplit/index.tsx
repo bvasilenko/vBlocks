@@ -11,7 +11,7 @@ export function HeroSplit({ content, theme }: BlockProps<HeroSplitContent>) {
   const { eyebrow, heading, description, primaryCta, secondaryCta, image } = content;
   return (
     <DBox as="section" aria-label={heading} style={themeStyle(theme)}>
-      <DGrid columns={2} px={6} py={24} gap={12} align="center" className={cn("max-w-6xl mx-auto")}>
+      <DGrid px={6} py={24} gap={12} align="center" className={cn("max-w-6xl mx-auto grid-cols-1 lg:grid-cols-2")}>
         <DStack gap={6}>
           {eyebrow && (
             <DBox as="p" color="accent" className={cn("text-sm font-semibold uppercase tracking-widest")}>
