@@ -5,7 +5,9 @@ import tseslint from "typescript-eslint";
 import globals from "globals";
 
 export default tseslint.config(
-  { ignores: ["dist/**", "coverage/**"] },
+  // demo/ is a standalone host app with its own toolchain — not part of the
+  // package lint surface.
+  { ignores: ["dist/**", "coverage/**", "demo/**"] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
