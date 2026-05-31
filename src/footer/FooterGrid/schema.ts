@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 bvasilenko
 import { z } from "zod";
-import { CtaSchema } from "../../shared/schemas";
+import { CtaSchema, DensitySchema } from "../../shared/schemas";
 
 const FooterColumnSchema = z.object({
   heading: z.string(),
@@ -9,8 +9,10 @@ const FooterColumnSchema = z.object({
 }).strict();
 
 export const FooterGridContentSchema = z.object({
+  kicker: z.string().optional(),
   columns: z.array(FooterColumnSchema).min(1).max(6),
   copyright: z.string(),
+  density: DensitySchema.optional(),
 }).strict();
 
 export type FooterGridContent = z.infer<typeof FooterGridContentSchema>;

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 bvasilenko
 import { z } from "zod";
-import { ImageSchema } from "../../shared/schemas";
+import { DensitySchema, ImageSchema, TonePillSchema } from "../../shared/schemas";
 
 const PortfolioItemSchema = z.object({
   title: z.string(),
@@ -10,7 +10,11 @@ const PortfolioItemSchema = z.object({
 }).strict();
 
 export const PortfolioGridContentSchema = z.object({
+  kicker: z.string().optional(),
+  eyebrow: z.string().optional(),
   items: z.array(PortfolioItemSchema).min(1),
+  tonePills: z.array(TonePillSchema).optional(),
+  density: DensitySchema.optional(),
 }).strict();
 
 export type PortfolioGridContent = z.infer<typeof PortfolioGridContentSchema>;

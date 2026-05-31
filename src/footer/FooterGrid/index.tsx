@@ -1,19 +1,24 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 bvasilenko
-import { Separator, cn } from "@booga/vui";
+import { Kicker, Separator, cn } from "@booga/vui";
 import { DBox, DGrid, DStack } from "../../primitives";
 import { type BlockProps } from "../../types";
-import { themeStyle, clampedGridCols } from "../../theme";
+import { densityPy, themeStyle, clampedGridCols } from "../../theme";
 import { FooterGridContentSchema, type FooterGridContent } from "./schema";
 
 export function FooterGrid({ content, theme }: BlockProps<FooterGridContent>) {
   FooterGridContentSchema.parse(content);
-  const { columns, copyright } = content;
+  const { kicker, columns, copyright, density } = content;
   return (
     <DBox as="footer" style={themeStyle(theme)}>
+      {kicker && (
+        <DBox px={6} pt={6} className={cn("max-w-6xl mx-auto")}>
+          <Kicker>{kicker}</Kicker>
+        </DBox>
+      )}
       <DGrid
         columns={clampedGridCols(columns.length)}
-        px={6} py={12} gap={8}
+        px={6} py={densityPy(density)} gap={8}
         className={cn("max-w-6xl mx-auto")}
       >
         {columns.map((col, i) => (

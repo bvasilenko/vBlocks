@@ -1,24 +1,35 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 bvasilenko
-import { Avatar, AvatarFallback, AvatarImage, Card, CardContent, cn } from "@booga/vui";
+import { Avatar, AvatarFallback, AvatarImage, Card, CardContent, Eyebrow, Kicker, Pill, cn } from "@booga/vui";
 import { DBox, DGrid, DInline, DStack } from "../../primitives";
 import { type BlockProps } from "../../types";
-import { themeStyle } from "../../theme";
+import { densityPy, themeStyle } from "../../theme";
 import { TestimonialGridContentSchema, type TestimonialGridContent } from "./schema";
 
 export function TestimonialGrid({ content, theme }: BlockProps<TestimonialGridContent>) {
   TestimonialGridContentSchema.parse(content);
-  const { heading, items } = content;
+  const { kicker, eyebrow, heading, items, tonePills, density } = content;
   return (
     <DBox as="section" aria-label={heading} style={themeStyle(theme)}>
-      <DStack px={6} py={16} className={cn("max-w-6xl mx-auto gap-10")}>
-        <DBox as="h2" className={cn("text-3xl font-bold tracking-tight text-center")}>{heading}</DBox>
+      <DStack px={6} py={densityPy(density)} className={cn("max-w-6xl mx-auto gap-10")}>
+        <DStack gap={3} align="center" className={cn("text-center")}>
+          {kicker && <Kicker>{kicker}</Kicker>}
+          {eyebrow && <Eyebrow tone="info">{eyebrow}</Eyebrow>}
+          <DBox as="h2" className={cn("font-serif font-medium tracking-tight text-[clamp(1.65rem,2.8vw,2.15rem)]")}>{heading}</DBox>
+          {tonePills && tonePills.length > 0 && (
+            <DInline wrap gap={2} justify="center">
+              {tonePills.map((pill, i) => (
+                <Pill key={i} tone={pill.tone}>{pill.label}</Pill>
+              ))}
+            </DInline>
+          )}
+        </DStack>
         <DGrid gap={6} className={cn("grid-cols-1 sm:grid-cols-2 lg:grid-cols-3")}>
           {items.map((item, i) => (
             <Card key={i}>
               <CardContent>
                 <DStack gap={4} pt={4}>
-                  <DBox as="blockquote" className={cn("text-sm leading-relaxed")}>
+                  <DBox as="blockquote" className={cn("text-sm font-serif leading-relaxed")}>
                     <DBox as="p">{item.quote}</DBox>
                   </DBox>
                   <DInline gap={3} align="center">

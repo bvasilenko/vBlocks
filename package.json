@@ -1,6 +1,6 @@
 {
   "name": "@booga/vblocks",
-  "version": "0.3.5",
+  "version": "0.4.0",
   "description": "Composed section blocks: hero, CTA, FAQ, footer, gallery, portfolio, post, team, testimonial, blog, business, features. Schema-validated content, vUi primitives, DSL-styled.",
   "type": "module",
   "sideEffects": false,
@@ -91,9 +91,9 @@
     "build:css": "tailwindcss -i ./styles-entry.css -c ./tailwind.config.js -o ./dist/styles.css --minify"
   },
   "dependencies": {
-    "@booga/vdsl": "^0.2.0",
+    "@booga/vdsl": "^0.3.0",
     "@booga/vhooks": "^0.1.0",
-    "@booga/vui": "^0.3.0",
+    "@booga/vui": "^0.4.0",
     "zod": "^3.0.0"
   },
   "peerDependencies": {
@@ -101,7 +101,7 @@
     "react-dom": "^18.0.0"
   },
   "devDependencies": {
-    "@booga/vtheme": "^0.2.1",
+    "@booga/vtheme": "^0.3.0",
     "@eslint/js": "^9.0.0",
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^16.0.0",

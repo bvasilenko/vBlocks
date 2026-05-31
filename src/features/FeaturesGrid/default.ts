@@ -3,7 +3,9 @@
 import { type FeaturesGridContent } from "./schema";
 
 export const FeaturesGridDefaultContent: FeaturesGridContent = {
-  heading: "Built-in capabilities",
+  kicker: "Capabilities",
+  eyebrow: "What ships in the box",
+  heading: "Built-in capabilities.",
   features: [
     { title: "Schema validation", description: "Content validated at runtime via Zod.", icon: "✓" },
     { title: "Tree-shaking", description: "Per-category entry points, lean bundles.", icon: "⚡" },

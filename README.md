@@ -1,6 +1,6 @@
 # vBlocks
 
-Composed section blocks: hero, CTA, FAQ, footer, gallery, portfolio, post, team, testimonial, blog, business, features. Schema-validated content, vUi primitives, DSL-styled. Drop into a page — no manual wiring.
+Composed section blocks: hero, CTA, FAQ, footer, gallery, portfolio, post, team, testimonial, blog, business, features. Schema-validated content, vUi primitives, DSL-styled. Drop into a page - no manual wiring.
 
 ## Install
 
@@ -50,10 +50,26 @@ const content: HeroSplitContent = {
 
 Each block exports:
 
-- `<Variant>` — component
-- `<Variant>ContentSchema` — Zod schema
-- `<Variant>Content` — TypeScript type
-- `<Variant>DefaultContent` — sample content for previews
+- `<Variant>` - component
+- `<Variant>ContentSchema` - Zod schema
+- `<Variant>Content` - TypeScript type
+- `<Variant>DefaultContent` - sample content for previews
+
+## Richness vocabulary (0.4.0)
+
+Every section schema accepts four optional richness-flow fields driven by
+vUi 0.4.0 primitives and vTheme 0.3.0 tone tokens:
+
+| Field | Type | Renders via |
+|---|---|---|
+| `kicker?` | `string` | `<Kicker>` (rounded-full chip, semantic-kind `kicker`) |
+| `eyebrow?` | `string` | `<Eyebrow tone="info">` (uppercase tracking-wide label) |
+| `tonePills?` | `Array<{ label, tone? }>` | `<Pill tone={...}>` (engagement-tag chrome) |
+| `density?` | `'compact' \| 'normal' \| 'spacious'` | section `py` (12 / 24 / 32; default `normal`) |
+
+Section headings render in `font-serif` with `clamp(...)` sizing aligned to
+the proposal typography. Description prose renders through `<Lead>` from vUi
+(constrained measure, muted-foreground color, relaxed line-height).
 
 ## Theme overrides
 

@@ -5,6 +5,79 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-05-31
+
+Fourth and final landing in the v-suite upstream richness flow. Consumes
+vTheme 0.3.0 (font + tone + tracking tokens), vDsl 0.3.0 (typeface / tone /
+tracking / semanticKind props + 218-entry safelist), and vUi 0.4.0 (Kicker,
+Eyebrow, Lead, Pill primitives plus Button/Card/Badge tone retune).
+
+### Added
+
+- `kicker?: string` and `eyebrow?: string` optional content fields on every
+  section schema (Hero, Cta, Faq, Footer, Blog, Business, Gallery, Portfolio,
+  Post, Team, Testimonial, Features split + grid variants). Kicker renders
+  through `<Kicker>`; eyebrow renders through `<Eyebrow tone="info">`.
+- `tonePills?: Array<{ label: string; tone?: 'ok'|'warn'|'bad'|'info'|'meta' }>`
+  optional field on every section. Each entry renders through
+  `<Pill tone={...}>` from vUi 0.4.0 (engagement-tag chrome, tone-soft fill).
+- `density?: 'compact' | 'normal' | 'spacious'` optional field on every
+  section. Maps to vDsl `py` prop on the section root: compact = py-12,
+  normal = py-24 (default), spacious = py-32.
+- Shared `DensitySchema`, `ToneSchema`, `TonePillSchema` in
+  `src/shared/schemas.ts` as single source of truth for the new fields.
+- Shared `densityPy(density)` and `Density` / `TonePill` types in
+  `src/theme.ts` for consistent py-resolution across every section.
+- `tests/richness.test.tsx`: per-block schema + render contract for the four
+  new fields (296 added assertions; covers tone enum, density enum, semantic
+  data attributes, kicker/eyebrow DOM presence, pill count per section).
+- Tone-utility safelist in `tailwind.config.js` so the precompiled
+  `dist/styles.css` carries `bg-tone-*-soft`, `text-tone-*-fg`, and
+  `border-tone-*-fg/{25,40}` for every tone (15 added utilities).
+
+### Changed
+
+- Section headings switched from `text-3xl font-bold tracking-tight` /
+  `text-5xl font-bold tracking-tight leading-tight` to proposal-grade
+  serif sizing: hero `h1` is `font-serif font-medium tracking-tight
+  text-[clamp(2.3rem,4.2vw,3.2rem)]`; section `h2` is
+  `text-[clamp(1.65rem,2.8vw,2.15rem)]`; post `h1` is
+  `text-[clamp(2rem,3.6vw,2.6rem)]`. Card titles (h3) switched to
+  `font-serif font-medium`.
+- Section description / lead paragraphs now render through `<Lead>` from
+  vUi 0.4.0 (constrained measure, muted-foreground color, leading-relaxed)
+  instead of a local `DBox as="p" color="muted" className="text-lg"` pattern.
+- Default vertical padding raised from `py-16` (content blocks),
+  `py-20` (CtaCentered), `py-12` (footers) to a unified `py-24` (normal
+  density) on every section. Consumers can opt back with `density="compact"`.
+- HeroSplit hero already defaulted to `py-24`; HeroSplit now flows that
+  through the density mechanism instead of a hard-coded literal.
+- FeaturesGrid + FaqGrid + BusinessGrid + TestimonialGrid + TeamGrid heading
+  rows gained eyebrow/kicker scaffolding above the section heading; tone-pill
+  rendering sits between heading and content body when populated.
+- FooterSplit brand-name run rendered in `font-serif font-medium` to match
+  the proposal brand-mark treatment.
+- Default content rewrites for Hero, Cta, Features, Business sections:
+  terse noun-phrase voice, kicker + eyebrow + lead structure, no marketing
+  hedges, no em-dashes (proposal voice match).
+- `@booga/vtheme` raised to `^0.3.0`. `@booga/vdsl` raised to `^0.3.0`.
+  `@booga/vui` raised to `^0.4.0`. Stylesheet rebuild includes vUi 0.4.0
+  utility classes via `node_modules/@booga/vui/dist` content glob.
+
+### Breaking
+
+- Section vertical padding default doubles from `py-12` / `py-16` to
+  `py-24`. Pages stacking multiple sections grow vertically. Opt-out:
+  pass `density="compact"` on the affected sections.
+- Section headings switch typeface from sans-serif bold to serif medium
+  (Playfair Display via vTheme 0.3.0's `--v-font-serif` token, fallback
+  `Georgia, serif`). Visual change is large. No API change; existing
+  schemas continue to validate.
+- Lead-paragraph rendering moved into `<Lead>` from vUi 0.4.0. Output
+  carries `data-semantic-kind="lead"` + `vkind-lead` className. Consumers
+  asserting on the previous flat `<p class="text-lg">` output need to
+  update their selectors.
+
 ## [0.3.5] - 2026-05-24
 
 ### Fixed
