@@ -11,10 +11,32 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "isolatedModules": true,
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": ["node"],
-    "outDir": "./dist"
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": [
+      "node"
+    ],
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@booga/vblocks": [
+        "./src"
+      ],
+      "@booga/vblocks/*": [
+        "./src/*"
+      ]
+    }
   },
-  "include": ["src", "tests"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src",
+    "tests",
+    "demo/src"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

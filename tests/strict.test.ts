@@ -4,7 +4,7 @@ import { describe, it, expect } from "vitest";
 import { registry } from "../src/registry";
 import { shapeOf, requiredKeysOf, isPlainObject } from "./helpers";
 
-describe("strict — deep extra-property rejection across all nested structures", () => {
+describe("strict - deep extra-property rejection across all nested structures", () => {
   for (const [id, meta] of Object.entries(registry)) {
     const def = meta.default as Record<string, unknown>;
 

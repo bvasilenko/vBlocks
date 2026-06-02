@@ -39,7 +39,7 @@ let repo: string;
 beforeEach(() => { repo = makeRepo(); });
 afterEach(() => { rmSync(repo, { recursive: true, force: true }); });
 
-describe("scrub — clean repository passes both gates", () => {
+describe("scrub - clean repository passes both gates", () => {
   it("exits 0 with no tracked files", () => {
     expect(runScrub(repo).code).toBe(0);
   });
@@ -52,7 +52,7 @@ describe("scrub — clean repository passes both gates", () => {
   });
 });
 
-describe("scrub gate4 — donor pattern detection by pattern type", () => {
+describe("scrub gate4 - donor pattern detection by pattern type", () => {
   it.each([
     ["hyphenated sub-brand handle",  "alexy-os",                     "ts"  ],
     ["hyphenated sub-brand handle",  "delta5-hq",                    "ts"  ],
@@ -91,7 +91,7 @@ describe("scrub gate4 — donor pattern detection by pattern type", () => {
   });
 });
 
-describe("scrub gate5 — avatar voice example detection by pattern type", () => {
+describe("scrub gate5 - avatar voice example detection by pattern type", () => {
   it.each([
     ["single-word example",  "PixiJS",              "Uses PixiJS viewport."               ],
     ["single-word example",  "RxDB",                "RxDB integration layer."             ],
@@ -114,7 +114,7 @@ describe("scrub gate5 — avatar voice example detection by pattern type", () =>
   });
 });
 
-describe("scrub — git-tracked scope: only committed index is scanned", () => {
+describe("scrub - git-tracked scope: only committed index is scanned", () => {
   it("does not flag forbidden content in an untracked file", () => {
     untrack(repo, "file.ts", "ui8kit");
     expect(runScrub(repo).code).toBe(0);
@@ -133,7 +133,7 @@ describe("scrub — git-tracked scope: only committed index is scanned", () => {
   });
 
   it.each(["ts", "tsx", "md", "json", "yml", "toml"])(
-    "scans .%s files — all indexed extensions are covered",
+    "scans .%s files - all indexed extensions are covered",
     (ext) => {
       track(repo, `file.${ext}`, "ui8kit");
       expect(runScrub(repo).code).toBe(1);
@@ -141,7 +141,7 @@ describe("scrub — git-tracked scope: only committed index is scanned", () => {
   );
 });
 
-describe("scrub — gate independence: both gates evaluate regardless of which fires", () => {
+describe("scrub - gate independence: both gates evaluate regardless of which fires", () => {
   it("detects gate5 failure when gate4 is clean", () => {
     track(repo, "README.md", "PixiJS viewport.");
     const { code, output } = runScrub(repo);

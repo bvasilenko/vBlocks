@@ -6,7 +6,8 @@ export default {
   presets: [vtheme],
   content: [
     './index.html',
-    './src/**/*.{js,jsx}',
+    './src/**/*.{js,jsx,ts,tsx}',
+    '../src/**/*.{ts,tsx}',
     './node_modules/@booga/vblocks/dist/**/*.{js,cjs}',
     './node_modules/@booga/vui/dist/**/*.{js,cjs}',
   ],

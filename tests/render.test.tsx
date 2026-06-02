@@ -6,7 +6,7 @@ import { render } from "@testing-library/react";
 import { registry } from "../src/registry";
 import { shapeOf, requiredKeysOf, minContentOf } from "./helpers";
 
-describe("render — component output behavior", () => {
+describe("render - component output behavior", () => {
   for (const [id, meta] of Object.entries(registry)) {
     describe(id, () => {
       it("renders without throwing with full default content", () => {

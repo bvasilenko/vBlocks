@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <script>
+    var l = window.location;
+    var origin = l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '');
+    var path = l.pathname.replace(/\/$/, '');
+    var query = l.search ? '&q=' + encodeURIComponent(l.search.slice(1)) : '';
+    l.replace(origin + '/?p=' + encodeURIComponent(path) + query + l.hash);
+  </script>
+</head>
+<body></body>
+</html>
