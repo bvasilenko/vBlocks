@@ -14,8 +14,8 @@ import { shapeOf } from "./helpers";
 // level, not block-by-block.
 const RICHNESS_FIELDS = ["kicker", "eyebrow", "tonePills", "density"] as const;
 
-describe("richness — vBlocks 0.4.0 upstream-flow contract", () => {
-  describe("density — content schema field + theme helper", () => {
+describe("richness - vBlocks 0.4.0 upstream-flow contract", () => {
+  describe("density - content schema field + theme helper", () => {
     it("DensitySchema enumerates compact/normal/spacious only", () => {
       expect(DensitySchema.options).toEqual(["compact", "normal", "spacious"]);
     });
@@ -41,7 +41,7 @@ describe("richness — vBlocks 0.4.0 upstream-flow contract", () => {
     });
   });
 
-  describe("tone palette — five semantic tones bound to vTheme 0.3.0 roles", () => {
+  describe("tone palette - five semantic tones bound to vTheme 0.3.0 roles", () => {
     it("ToneSchema enumerates ok/warn/bad/info/meta only", () => {
       expect(ToneSchema.options).toEqual(["ok", "warn", "bad", "info", "meta"]);
     });
@@ -60,7 +60,7 @@ describe("richness — vBlocks 0.4.0 upstream-flow contract", () => {
     });
   });
 
-  describe("per-block schema fields — eyebrow, kicker, density, tonePills", () => {
+  describe("per-block schema fields - eyebrow, kicker, density, tonePills", () => {
     for (const [id, meta] of Object.entries(registry)) {
       describe(id, () => {
         const shape = shapeOf(meta.schema);
@@ -93,7 +93,7 @@ describe("richness — vBlocks 0.4.0 upstream-flow contract", () => {
     }
   });
 
-  describe("per-block render — richness-flow fields render without throwing", () => {
+  describe("per-block render - richness-flow fields render without throwing", () => {
     for (const [id, meta] of Object.entries(registry)) {
       describe(id, () => {
         const shape = shapeOf(meta.schema);

@@ -13,4 +13,6 @@ export * from "./blog/index";
 export * from "./business/index";
 export * from "./features/index";
 export { registry } from "./registry";
+export type { BlockId } from "./registry";
 export type { BlockProps, BlockMeta, AnyBlockMeta, ThemeOverride } from "./types";
+export * from "./modes/index";

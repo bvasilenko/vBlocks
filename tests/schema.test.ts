@@ -4,7 +4,7 @@ import { describe, it, expect } from "vitest";
 import { registry } from "../src/registry";
 import { shapeOf, requiredKeysOf, optionalKeysOf, isPlainObject, withoutKey } from "./helpers";
 
-describe("schema — validation contract per block", () => {
+describe("schema - validation contract per block", () => {
   for (const [id, meta] of Object.entries(registry)) {
     const shape = shapeOf(meta.schema);
     const def = meta.default as Record<string, unknown>;

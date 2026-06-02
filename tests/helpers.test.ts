@@ -22,7 +22,7 @@ const schema = z.object({
 const full = { title: "Hello", count: 3, tag: "news", note: "extra" };
 const minimal = { title: "Hello", count: 3 };
 
-describe("shapeOf — every schema field is addressable by name as a typed validator", () => {
+describe("shapeOf - every schema field is addressable by name as a typed validator", () => {
   it("returns a record keyed by field names", () => {
     const shape = shapeOf(schema);
     expect(Object.keys(shape).sort()).toEqual(["count", "note", "tag", "title"]);
@@ -36,7 +36,7 @@ describe("shapeOf — every schema field is addressable by name as a typed valid
   });
 });
 
-describe("requiredKeysOf — required fields are those the schema rejects when undefined", () => {
+describe("requiredKeysOf - required fields are those the schema rejects when undefined", () => {
   it("identifies required fields", () => {
     expect(requiredKeysOf(shapeOf(schema)).sort()).toEqual(["count", "title"]);
   });
@@ -52,7 +52,7 @@ describe("requiredKeysOf — required fields are those the schema rejects when u
   });
 });
 
-describe("optionalKeysOf — optional fields are those the schema accepts when undefined", () => {
+describe("optionalKeysOf - optional fields are those the schema accepts when undefined", () => {
   it("identifies optional fields", () => {
     expect(optionalKeysOf(shapeOf(schema)).sort()).toEqual(["note", "tag"]);
   });
@@ -78,7 +78,7 @@ describe("optionalKeysOf — optional fields are those the schema accepts when u
   });
 });
 
-describe("minContentOf — removing optional fields produces schema-valid required-only content", () => {
+describe("minContentOf - removing optional fields produces schema-valid required-only content", () => {
   it("retains all required fields", () => {
     const result = minContentOf(full, shapeOf(schema));
     expect("title" in result).toBe(true);
@@ -108,7 +108,7 @@ describe("minContentOf — removing optional fields produces schema-valid requir
   });
 });
 
-describe("isPlainObject — plain object detection excludes null, arrays, and primitives", () => {
+describe("isPlainObject - plain object detection excludes null, arrays, and primitives", () => {
   it("returns true for a plain object literal", () => {
     expect(isPlainObject({ a: 1 })).toBe(true);
   });
@@ -142,7 +142,7 @@ describe("isPlainObject — plain object detection excludes null, arrays, and pr
   });
 });
 
-describe("withoutKey — key omission produces an immutable shallow copy without the excluded entry", () => {
+describe("withoutKey - key omission produces an immutable shallow copy without the excluded entry", () => {
   it("excludes the specified key", () => {
     const result = withoutKey({ a: 1, b: 2, c: 3 }, "b");
     expect("b" in result).toBe(false);
@@ -169,7 +169,7 @@ describe("withoutKey — key omission produces an immutable shallow copy without
   });
 });
 
-describe("hasStringProps — all named keys must be present and hold string values", () => {
+describe("hasStringProps - all named keys must be present and hold string values", () => {
   it("returns true when all specified keys hold strings", () => {
     expect(hasStringProps({ src: "/img.jpg", alt: "desc" }, "src", "alt")).toBe(true);
   });

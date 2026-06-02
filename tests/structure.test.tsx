@@ -12,7 +12,7 @@ function expectedRootTag(id: string): "section" | "footer" | "article" {
   return "section";
 }
 
-describe("structure — semantic HTML and accessibility contracts", () => {
+describe("structure - semantic HTML and accessibility contracts", () => {
   for (const [id, meta] of Object.entries(registry)) {
     describe(id, () => {
       it("root element is the correct landmark tag", () => {

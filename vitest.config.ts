@@ -2,12 +2,23 @@
 // Copyright (c) 2026 bvasilenko
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
+import { resolve } from "path";
 
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      "@booga/vblocks": resolve(__dirname, "src"),
+    },
+  },
   test: {
     environment: "jsdom",
     setupFiles: ["./tests/setup.ts"],
+    server: {
+      deps: {
+        inline: ["@booga/vbrand"],
+      },
+    },
     coverage: {
       provider: "istanbul",
       include: ["src/**"],

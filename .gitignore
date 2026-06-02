@@ -11,3 +11,4 @@ coverage/
 contribot.state.*.json
 transcripts/
 package-lock.json
+.playwright-cli/

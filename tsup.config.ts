@@ -16,6 +16,7 @@ export default defineConfig({
   entry: {
     index: "src/index.ts",
     ...categoryEntries,
+    "modes/index": "src/modes/index.ts",
   },
   format: ["esm", "cjs"],
   dts: true,

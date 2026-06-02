@@ -21,7 +21,7 @@ function isBlockComponentFile(path: string): boolean {
   return /[/\\][^/\\]+[/\\][^/\\]+[/\\]index\.tsx$/.test(path);
 }
 
-describe("no-raw-classname — zero static className string literals in block source", () => {
+describe("no-raw-classname - zero static className string literals in block source", () => {
   it("src/ contains no template-literal className expressions", () => {
     const srcDir = resolve("src");
     const files = collectSourceFiles(srcDir);

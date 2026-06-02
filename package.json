@@ -1,6 +1,6 @@
 {
   "name": "@booga/vblocks",
-  "version": "0.4.0",
+  "version": "0.6.0-alpha.1",
   "description": "Composed section blocks: hero, CTA, FAQ, footer, gallery, portfolio, post, team, testimonial, blog, business, features. Schema-validated content, vUi primitives, DSL-styled.",
   "type": "module",
   "sideEffects": false,
@@ -73,7 +73,12 @@
       "import": "./dist/features/index.js",
       "require": "./dist/features/index.cjs"
     },
-    "./styles.css": "./dist/styles.css"
+    "./styles.css": "./dist/styles.css",
+    "./modes": {
+      "types": "./dist/modes/index.d.ts",
+      "import": "./dist/modes/index.js",
+      "require": "./dist/modes/index.cjs"
+    }
   },
   "files": [
     "dist/**/*",
@@ -92,19 +97,23 @@
   },
   "dependencies": {
     "@booga/vdsl": "^0.3.0",
+    "@booga/vfixtures": "^0.1.1",
     "@booga/vhooks": "^0.1.0",
     "@booga/vui": "^0.4.0",
+    "@playwright/cli": "^0.1.13",
     "zod": "^3.0.0"
   },
   "peerDependencies": {
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "@booga/vbrand": "^0.4.0-alpha.1"
   },
   "devDependencies": {
     "@booga/vtheme": "^0.3.0",
     "@eslint/js": "^9.0.0",
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^16.0.0",
+    "@types/micromatch": "^4.0.10",
     "@types/node": "^20.19.41",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",

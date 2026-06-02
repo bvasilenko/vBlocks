@@ -6,7 +6,7 @@ import { CtaSchema, ImageSchema, AvatarSchema } from "../src/shared/schemas";
 const validCta = { label: "Get started", href: "/start" };
 const validImage = { src: "/hero.jpg", alt: "Hero image" };
 
-describe("CtaSchema — call-to-action link contract", () => {
+describe("CtaSchema - call-to-action link contract", () => {
   it("accepts a valid cta object", () => {
     expect(CtaSchema.safeParse(validCta).success).toBe(true);
   });
@@ -58,7 +58,7 @@ describe("CtaSchema — call-to-action link contract", () => {
   });
 });
 
-describe("ImageSchema — image src/alt contract", () => {
+describe("ImageSchema - image src/alt contract", () => {
   it("accepts a valid image object", () => {
     expect(ImageSchema.safeParse(validImage).success).toBe(true);
   });
@@ -110,7 +110,7 @@ describe("ImageSchema — image src/alt contract", () => {
   });
 });
 
-describe("AvatarSchema — enforces the ImageSchema contract through reference identity", () => {
+describe("AvatarSchema - enforces the ImageSchema contract through reference identity", () => {
   it("AvatarSchema === ImageSchema (single source of truth)", () => {
     expect(AvatarSchema).toBe(ImageSchema);
   });

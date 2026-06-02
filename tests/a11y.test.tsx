@@ -7,7 +7,7 @@ import axe from "axe-core";
 import { registry } from "../src/registry";
 import { shapeOf, minContentOf } from "./helpers";
 
-describe("a11y — axe-core smoke per block", () => {
+describe("a11y - axe-core smoke per block", () => {
   for (const [id, meta] of Object.entries(registry)) {
     it(`${id}: no axe violations with full default content`, async () => {
       const { container } = render(

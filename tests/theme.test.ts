@@ -3,7 +3,7 @@
 import { describe, it, expect } from "vitest";
 import { themeStyle, clampedGridCols } from "../src/theme";
 
-describe("themeStyle — ThemeOverride to CSS custom properties", () => {
+describe("themeStyle - ThemeOverride to CSS custom properties", () => {
   it("returns undefined when theme is undefined", () => {
     expect(themeStyle(undefined)).toBeUndefined();
   });
@@ -47,7 +47,7 @@ describe("themeStyle — ThemeOverride to CSS custom properties", () => {
   });
 });
 
-describe("clampedGridCols — column count clamped to valid Grid range [1, 6]", () => {
+describe("clampedGridCols - column count clamped to valid Grid range [1, 6]", () => {
   it("clamps values below 1 to 1", () => {
     expect(clampedGridCols(0)).toBe(1);
     expect(clampedGridCols(-5)).toBe(1);

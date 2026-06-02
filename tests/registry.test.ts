@@ -18,7 +18,7 @@ const EXPECTED_BLOCK_IDS: BlockId[] = [
   "features/split", "features/grid",
 ];
 
-describe("registry — shape and completeness", () => {
+describe("registry - shape and completeness", () => {
   it("contains exactly the expected set of BlockIds", () => {
     expect(Object.keys(registry).sort()).toEqual([...EXPECTED_BLOCK_IDS].sort());
   });
