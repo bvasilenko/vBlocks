@@ -1,6 +1,6 @@
 # .github/workflows/ci.yml — copy to each per-package repo's .github/workflows/
 #
-# Triggers: push to main, PRs to main, semver tags.
+# Triggers: push to main, PRs to main, semver tags (stable + prerelease).
 # Pinned tool versions per frameworks/manager/execution/conventions.md §5.
 
 name: ci
@@ -10,6 +10,7 @@ on:
     branches: [main]
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"
+      - "v[0-9]+.[0-9]+.[0-9]+-*"
   pull_request:
     branches: [main]
 
@@ -82,8 +83,60 @@ jobs:
       - name: build
         run: bun run build
 
-
       - name: publish
         run: npm publish --access=public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  gh-pages-deploy:
+    needs: [verify, publish]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: [self-hosted, Linux, X64]
+    permissions:
+      contents: write
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: setup-bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.x
+          no-cache: true
+
+      - name: install-root
+        run: bun install --frozen-lockfile
+
+      - name: build-root
+        run: bun run build
+
+      - name: install-demo
+        working-directory: demo
+        run: npm ci
+
+      - name: build-demo
+        working-directory: demo
+        env:
+          VITE_BASE: /vBlocks/
+        run: npm run build
+
+      - name: publish-gh-pages
+        run: |
+          set -euo pipefail
+          DEPLOY_DIR=$(mktemp -d)
+          cp -R demo/dist/. "$DEPLOY_DIR/"
+          touch "$DEPLOY_DIR/.nojekyll"
+          cd "$DEPLOY_DIR"
+          git init -q
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -q -b gh-pages
+          git add -A
+          git commit -q -m "gh-pages: deploy ${GITHUB_REF_NAME}"
+          git push -q -f "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}

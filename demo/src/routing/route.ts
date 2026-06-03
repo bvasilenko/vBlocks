@@ -1,15 +1,24 @@
 export type RouteMode = "catalog" | "canvas" | "app-template";
 
-export function readRouteMode(): RouteMode {
-  const segment = window.location.pathname.replace(/^\//, "").split("/")[0];
+export function resolveModeFromPathname(pathname: string, base: string): RouteMode {
+  const relative = pathname.startsWith(base) ? pathname.slice(base.length) : pathname.replace(/^\//, "");
+  const segment = relative.split("/")[0];
   if (segment === "canvas") return "canvas";
   if (segment === "app-template") return "app-template";
   return "catalog";
 }
 
+export function buildModePathname(mode: RouteMode, base: string): string {
+  return mode === "catalog" ? base : `${base}${mode}`;
+}
+
+export function readRouteMode(): RouteMode {
+  return resolveModeFromPathname(window.location.pathname, import.meta.env.BASE_URL);
+}
+
 export function navigateToMode(mode: RouteMode): void {
   const url = new URL(window.location.href);
-  url.pathname = mode === "catalog" ? "/" : `/${mode}`;
+  url.pathname = buildModePathname(mode, import.meta.env.BASE_URL);
   url.searchParams.delete("inspect");
   window.history.pushState(null, "", url.toString());
 }

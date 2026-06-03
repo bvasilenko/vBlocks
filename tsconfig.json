@@ -17,6 +17,7 @@
       "DOM.Iterable"
     ],
     "types": [
+      "vite/client",
       "node"
     ],
     "outDir": "./dist",
