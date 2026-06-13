@@ -1,4 +1,45 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 bvasilenko
+
 export type RouteMode = "catalog" | "canvas" | "app-template";
+
+const KNOWN_MODES = new Set<RouteMode>(["catalog", "canvas", "app-template"]);
+
+function toKnownMode(value: string | null): RouteMode | null {
+  return value !== null && KNOWN_MODES.has(value as RouteMode) ? (value as RouteMode) : null;
+}
+
+function trimHashPrefix(hash: string): string {
+  return hash.startsWith("#") ? hash.slice(1) : hash;
+}
+
+function hashPairs(hash: string): string[] {
+  const raw = trimHashPrefix(hash);
+  return raw === "" ? [] : raw.split("&");
+}
+
+function hashPairKey(pair: string): string {
+  const equalIndex = pair.indexOf("=");
+  return equalIndex === -1 ? pair : pair.slice(0, equalIndex);
+}
+
+function hashPairValue(pair: string): string | null {
+  const equalIndex = pair.indexOf("=");
+  return equalIndex === -1 ? null : pair.slice(equalIndex + 1);
+}
+
+function hashValue(hash: string, key: string): string | null {
+  const pair = hashPairs(hash).find((candidate) => hashPairKey(candidate) === key);
+  return pair ? hashPairValue(pair) : null;
+}
+
+export function resolveModeFromSearch(search: string): RouteMode | null {
+  return toKnownMode(new URLSearchParams(search).get("mode"));
+}
+
+export function resolveModeFromHash(hash: string): RouteMode | null {
+  return toKnownMode(hashValue(hash, "mode"));
+}
 
 export function resolveModeFromPathname(pathname: string, base: string): RouteMode {
   const relative = pathname.startsWith(base) ? pathname.slice(base.length) : pathname.replace(/^\//, "");
@@ -12,14 +53,25 @@ export function buildModePathname(mode: RouteMode, base: string): string {
   return mode === "catalog" ? base : `${base}${mode}`;
 }
 
+function stripModeFromHash(hash: string): string {
+  const result = hashPairs(hash).filter((pair) => hashPairKey(pair) !== "mode").join("&");
+  return result ? `#${result}` : "";
+}
+
 export function readRouteMode(): RouteMode {
-  return resolveModeFromPathname(window.location.pathname, import.meta.env.BASE_URL);
+  return (
+    resolveModeFromSearch(window.location.search) ??
+    resolveModeFromHash(window.location.hash) ??
+    resolveModeFromPathname(window.location.pathname, import.meta.env.BASE_URL)
+  );
 }
 
 export function navigateToMode(mode: RouteMode): void {
   const url = new URL(window.location.href);
   url.pathname = buildModePathname(mode, import.meta.env.BASE_URL);
   url.searchParams.delete("inspect");
+  url.searchParams.delete("mode");
+  url.hash = stripModeFromHash(url.hash);
   window.history.pushState(null, "", url.toString());
 }
 

@@ -1,4 +1,4 @@
-# .github/workflows/ci.yml — copy to each per-package repo's .github/workflows/
+# .github/workflows/ci.yml - copy to each per-package repo's .github/workflows/
 #
 # Triggers: push to main, PRs to main, semver tags (stable + prerelease).
 # Pinned tool versions per frameworks/manager/execution/conventions.md §5.
@@ -114,13 +114,13 @@ jobs:
 
       - name: install-demo
         working-directory: demo
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: build-demo
         working-directory: demo
         env:
           VITE_BASE: /vBlocks/
-        run: npm run build
+        run: bun run build
 
       - name: publish-gh-pages
         run: |

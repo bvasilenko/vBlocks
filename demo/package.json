@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5250",
-    "build": "vite build"
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0 --port 4173",
+    "test:runtime": "cd .. && bun run test:runtime"
   },
   "dependencies": {
     "@booga/vblocks": "^0.6.0-alpha.1",

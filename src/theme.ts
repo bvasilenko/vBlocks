@@ -36,6 +36,34 @@ export function densityPy(density: Density | undefined): 12 | 24 | 32 {
 }
 
 /**
+ * Cta-anchored hero layouts keep the top rhythm from DENSITY_PY while reducing
+ * bottom padding so the primary action remains visually connected to the next
+ * section. The default public hero layout stays symmetric unless a caller opts
+ * into this app-template presentation mode.
+ */
+export const DENSITY_PB: Record<Density, 6 | 12 | 16> = {
+  compact: 6,
+  normal: 12,
+  spacious: 16,
+};
+
+export function densityPb(density: Density | undefined): 6 | 12 | 16 {
+  return DENSITY_PB[density ?? "normal"];
+}
+
+/**
+ * Maximum tolerated pixel gap between the hero CTA button bottom edge and the
+ * first heading of the next section at density="normal". Derivation (16px root):
+ *   hero pb     = DENSITY_PB.normal * 4 = 48 px
+ *   features pt = DENSITY_PY.normal * 4 = 96 px
+ *   tolerance   = 16 px (subpixel rounding + micro-padding headroom)
+ * Reducing below the 144 px structural floor requires a vBrand defaultComposition
+ * density change upstream, not a vBlocks layout edit.
+ */
+export const HERO_CTA_GAP_THRESHOLD_PX =
+  DENSITY_PB.normal * 4 + DENSITY_PY.normal * 4 + 16;
+
+/**
  * Tone-pill content schema item. Each pill renders through vUi's `<Pill>`
  * primitive (semantic-kind `engagement-tag`) and carries an optional tone
  * derived from vTheme 0.3.0's tone-* color roles.

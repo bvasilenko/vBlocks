@@ -1,6 +1,7 @@
 import { useEffect } from "react";
-import { CompositionEditor, compositionToHash, compositionFromHash } from "@booga/vbrand/composition";
+import { CompositionEditor, compositionFromHash } from "@booga/vbrand/composition";
 import type { CompositionSpec } from "@booga/vbrand/composition";
+import { writeCompositionHash } from "../routing/composition-hash";
 
 interface VariantSelectorProps {
   spec: CompositionSpec;
@@ -15,7 +16,7 @@ export function VariantSelector({ spec, defaultSpec, onChange }: VariantSelector
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    window.location.hash = compositionToHash(spec);
+    writeCompositionHash(spec);
   }, [spec]);
 
   return (

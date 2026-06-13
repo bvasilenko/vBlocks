@@ -10,6 +10,7 @@ import type { CompositionSpec } from "@booga/vbrand/composition";
 import { catalogMode } from "./catalog";
 import { canvasMode } from "./canvas";
 import { makeAppTemplateMode } from "./app-template";
+import { selectBrandMarkImage } from "./brand-mark";
 import type { GalleryMode } from "./gallery-mode";
 
 const stripe = loadFixture("stripe");
@@ -107,4 +108,32 @@ describe("GalleryMode contract - brand theme injection", () => {
     const style = (container.firstElementChild as HTMLElement).getAttribute("style") ?? "";
     expect(style).toContain("--v-color-primary");
   });
+});
+
+describe("App-template hero presentation boundary", () => {
+  const heroTemplateIds = TEMPLATE_IDS.filter((templateId) =>
+    makeAppTemplateMode(templateId).defaultComposition().sections.some((section) => section.id === "hero")
+  );
+
+  for (const templateId of heroTemplateIds) {
+    it(`${templateId}: visible hero sections receive app-template presentation`, () => {
+      const mode = makeAppTemplateMode(templateId);
+      const spec = mode.defaultComposition();
+      const { container } = render(
+        createElement(() => mode.compose(stripe, spec) as JSX.Element)
+      );
+      const heroLayout = container.querySelector("section > *") as HTMLElement | null;
+      const img = container.querySelector("section img") as HTMLImageElement | null;
+      expect(heroLayout).not.toBeNull();
+      expect(img).not.toBeNull();
+      expect(heroLayout!.classList.contains("items-start")).toBe(true);
+      expect(heroLayout!.classList.contains("items-center")).toBe(false);
+      expect(heroLayout!.classList.contains("pt-24")).toBe(true);
+      expect(heroLayout!.classList.contains("pb-12")).toBe(true);
+      expect(heroLayout!.classList.contains("py-24")).toBe(false);
+      expect(img!.classList.contains("object-scale-down")).toBe(true);
+      expect(img!.classList.contains("object-cover")).toBe(false);
+      expect(img!.getAttribute("src")).toBe(selectBrandMarkImage(stripe).src);
+    });
+  }
 });
