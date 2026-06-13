@@ -15,6 +15,7 @@ import { CatalogView } from "./catalog/catalog-view";
 import { ModeChip } from "./ui/mode-chip";
 import { ErrorBanner } from "./ui/error-banner";
 import { SidebarDrawer } from "./ui/sidebar-drawer";
+import { CatalogDrawer } from "./catalog/catalog-drawer";
 import { toErrorMessage } from "./lib/to-error-message";
 import {
   readRouteMode,
@@ -119,11 +120,11 @@ export function App() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-30 border-b border-border bg-card">
+      <header className="sticky top-0 z-30 border-b border-border/80 bg-card">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-2">
           <span className="shrink-0 font-mono text-sm font-bold tracking-tight">@booga/vblocks</span>
 
-          <div className="flex items-center gap-1 rounded-full bg-muted/50 px-1 py-0.5">
+          <div className="flex items-center gap-1 rounded-full border border-border/70 bg-background/80 px-1 py-0.5 font-mono uppercase tracking-wide">
             {(["catalog", "canvas", "app-template"] as RouteMode[]).map((m) => (
               <ModeChip key={m} active={modeId === m} onClick={() => handleModeChange(m)}>
                 {m}
@@ -132,7 +133,7 @@ export function App() {
           </div>
 
           {modeId === "app-template" && (
-            <div className="flex max-w-full items-center gap-1 overflow-x-auto rounded-full bg-muted/50 px-1 py-0.5">
+            <div className="flex max-w-full items-center gap-1 overflow-x-auto rounded-full border border-border/70 bg-background/80 px-1 py-0.5 font-mono uppercase tracking-wide">
               {TEMPLATE_IDS.map((t) => (
                 <ModeChip key={t} active={templateId === t} onClick={() => handleTemplateChange(t)}>
                   {t}
@@ -141,15 +142,15 @@ export function App() {
             </div>
           )}
 
-          {modeId === "canvas" && (
+          {(modeId === "canvas" || modeId === "catalog") && !sidebarOpen && (
             <button
               type="button"
-              aria-label={sidebarOpen ? "Close variants" : "Open variants"}
-              aria-expanded={sidebarOpen}
+              aria-label="Open variants"
+              aria-expanded="false"
               onClick={() => setSidebarOpen((o) => !o)}
-              className="shrink-0 rounded border border-border px-3 py-1 text-xs font-semibold hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring md:hidden"
+              className="shrink-0 rounded-full border border-border bg-card px-3 py-1 font-mono text-xs font-semibold uppercase tracking-wide transition duration-150 hover:border-accent/60 hover:bg-accent hover:text-accent-foreground active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring md:hidden"
             >
-              {sidebarOpen ? "Close" : "Variants"}
+              Variants
             </button>
           )}
 
@@ -161,13 +162,13 @@ export function App() {
               onKeyDown={(e) => e.key === "Enter" && handleBrandSubmit()}
               aria-label="Brand source"
               placeholder="fixture:stripe  |  github:owner/repo  |  npm:pkg  |  https://..."
-              className="min-w-0 flex-1 rounded border border-border bg-background px-3 py-1 font-mono text-xs focus:outline-none focus:ring-1 focus:ring-ring"
+              className="min-w-0 flex-1 rounded border border-border bg-background px-3 py-1 font-mono text-xs selection:bg-accent/20 placeholder:text-muted-foreground/60 transition duration-150 hover:border-accent/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             />
             <button
               type="button"
               onClick={handleBrandSubmit}
               disabled={loading}
-              className="shrink-0 rounded border border-border px-3 py-1 text-xs font-semibold hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50"
+              className="shrink-0 rounded-full border border-border px-3 py-1 font-mono text-xs font-semibold uppercase tracking-wide transition duration-150 hover:border-accent/60 hover:bg-accent hover:text-accent-foreground active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading ? "..." : "Load"}
             </button>
@@ -185,6 +186,15 @@ export function App() {
             <VariantSelector
               spec={composition}
               defaultSpec={canvasMode.defaultComposition()}
+              onChange={setComposition}
+            />
+          </SidebarDrawer>
+        )}
+        {modeId === "catalog" && (
+          <SidebarDrawer open={sidebarOpen} onClose={() => setSidebarOpen(false)} label="Catalog options">
+            <CatalogDrawer
+              spec={composition}
+              defaultSpec={defaultCatalogComposition()}
               onChange={setComposition}
             />
           </SidebarDrawer>

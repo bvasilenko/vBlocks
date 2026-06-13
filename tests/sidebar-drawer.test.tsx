@@ -8,11 +8,18 @@ const CHILD_TEXT = "panel content";
 const children = <span>{CHILD_TEXT}</span>;
 
 describe("SidebarDrawer - accessibility", () => {
-  it("aside has aria-label='Variant selector'", () => {
+  it("aside has aria-label='Variant selector' by default", () => {
     const { getByRole } = render(
       <SidebarDrawer open={false} onClose={() => {}}>{children}</SidebarDrawer>
     );
     expect(getByRole("complementary", { name: "Variant selector" })).toBeTruthy();
+  });
+
+  it("aside reflects a custom label prop in its aria-label", () => {
+    const { getByRole } = render(
+      <SidebarDrawer open={false} onClose={() => {}} label="Catalog options">{children}</SidebarDrawer>
+    );
+    expect(getByRole("complementary", { name: "Catalog options" })).toBeTruthy();
   });
 });
 

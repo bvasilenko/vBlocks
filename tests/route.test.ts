@@ -3,6 +3,13 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { registry } from "../src/registry";
 import {
+  compositionToHash,
+  compositionFromHash,
+  type CompositionSpec,
+} from "@booga/vbrand/composition";
+import {
+  resolveModeFromSearch,
+  resolveModeFromHash,
   resolveModeFromPathname,
   buildModePathname,
   readRouteMode,
@@ -283,4 +290,181 @@ describe("blockIdToSlug / slugToBlockId - format conversion contract", () => {
       expect(slugToBlockId(blockIdToSlug(id))).toBe(id);
     });
   }
+});
+
+
+describe("resolveModeFromSearch - query param extraction", () => {
+  const CASES: Array<{ search: string; expected: RouteMode | null }> = [
+    { search: "?mode=canvas",        expected: "canvas" },
+    { search: "?mode=app-template",  expected: "app-template" },
+    { search: "?mode=catalog",       expected: "catalog" },
+    { search: "?mode=unknown",       expected: null },
+    { search: "?other=x",            expected: null },
+    { search: "",                    expected: null },
+    { search: "?mode=CANVAS",                    expected: null },
+    { search: "?mode=canvas&other=x",            expected: "canvas" },
+    { search: "?mode=",                          expected: null },
+    { search: "?mode=canvas&mode=app-template",  expected: "canvas" },
+  ];
+
+  for (const { search, expected } of CASES) {
+    it(`"${search}" -> ${JSON.stringify(expected)}`, () => {
+      expect(resolveModeFromSearch(search)).toBe(expected);
+    });
+  }
+});
+
+describe("resolveModeFromHash - fragment extraction", () => {
+  const CASES: Array<{ hash: string; expected: RouteMode | null }> = [
+    { hash: "#mode=canvas",               expected: "canvas" },
+    { hash: "#mode=app-template",         expected: "app-template" },
+    { hash: "#mode=catalog",              expected: "catalog" },
+    { hash: "#mode=app-template&other=x", expected: "app-template" },
+    { hash: "#other=x&mode=canvas",       expected: "canvas" },
+    { hash: "#mode=canvas&mode=catalog",  expected: "canvas" },
+    { hash: "#xmode=canvas",              expected: null },
+    { hash: "#mode",                      expected: null },
+    { hash: "#mode=unknown",              expected: null },
+    { hash: "",                           expected: null },
+    { hash: "mode=canvas",                expected: "canvas" },
+    { hash: "#mode=CANVAS",               expected: null },
+    { hash: "#mode=",                     expected: null },
+    { hash: "#",                          expected: null },
+  ];
+
+  for (const { hash, expected } of CASES) {
+    it(`"${hash}" -> ${JSON.stringify(expected)}`, () => {
+      expect(resolveModeFromHash(hash)).toBe(expected);
+    });
+  }
+});
+
+describe("readRouteMode - multi-source precedence (search > hash > pathname)", () => {
+  it("search param wins over conflicting hash fragment", () => {
+    window.history.pushState({}, "", "/?mode=canvas#mode=app-template");
+    expect(readRouteMode()).toBe("canvas");
+  });
+
+  it("search param wins over conflicting pathname", () => {
+    window.history.pushState({}, "", "/app-template?mode=canvas");
+    expect(readRouteMode()).toBe("canvas");
+  });
+
+  it("hash fragment wins over conflicting pathname", () => {
+    window.history.pushState({}, "", "/app-template#mode=canvas");
+    expect(readRouteMode()).toBe("canvas");
+  });
+
+  it("falls through to pathname when search and hash are absent", () => {
+    window.history.pushState({}, "", "/canvas");
+    expect(readRouteMode()).toBe("canvas");
+  });
+
+  it("search unknown mode falls through to hash", () => {
+    window.history.pushState({}, "", "/?mode=unknown#mode=canvas");
+    expect(readRouteMode()).toBe("canvas");
+  });
+
+  it("search and hash unknown fall through to pathname", () => {
+    window.history.pushState({}, "", "/canvas?mode=unknown#mode=unknown");
+    expect(readRouteMode()).toBe("canvas");
+  });
+});
+
+describe("navigateToMode - clears stale mode hints from search and hash", () => {
+  it("removes ?mode= from the search string", () => {
+    window.history.pushState({}, "", "/?mode=app-template");
+    navigateToMode("catalog");
+    expect(new URLSearchParams(window.location.search).get("mode")).toBeNull();
+  });
+
+  it("removes #mode= from the hash fragment", () => {
+    window.history.pushState({}, "", "/#mode=app-template");
+    navigateToMode("canvas");
+    expect(new URLSearchParams(window.location.hash.slice(1)).get("mode")).toBeNull();
+  });
+
+  it("readRouteMode after navigateToMode reflects the new mode, not stale hints", () => {
+    window.history.pushState({}, "", "/?mode=app-template#mode=canvas");
+    navigateToMode("catalog");
+    expect(readRouteMode()).toBe("catalog");
+  });
+});
+
+describe("navigateToMode - hash payload preserved when mode key is stripped", () => {
+  function compositionHash(spec: CompositionSpec): string {
+    const hash = compositionToHash(spec);
+    return hash.startsWith("#") ? hash.slice(1) : hash;
+  }
+
+  const compositionSpec: CompositionSpec = {
+    sections: [
+      { id: "hero/split", visible: true, density: "regular", order: 0 },
+      { id: "cta/split", visible: false, density: "compact", order: 1 },
+    ],
+  };
+  const compositionPair = compositionHash(compositionSpec);
+
+  const CASES: Array<{
+    name: string;
+    initialHash: string;
+    expectedHash: string;
+    expectedComposition?: CompositionSpec;
+  }> = [
+    {
+      name: "mode only",
+      initialHash: "#mode=app-template",
+      expectedHash: "",
+    },
+    {
+      name: "mode before composition",
+      initialHash: `#mode=app-template&${compositionPair}`,
+      expectedHash: `#${compositionPair}`,
+      expectedComposition: compositionSpec,
+    },
+    {
+      name: "mode after composition",
+      initialHash: `#${compositionPair}&mode=canvas`,
+      expectedHash: `#${compositionPair}`,
+      expectedComposition: compositionSpec,
+    },
+    {
+      name: "mode between opaque payload pairs",
+      initialHash: "#first=a+b&mode=canvas&second=%2Fraw%3Dvalue",
+      expectedHash: "#first=a+b&second=%2Fraw%3Dvalue",
+    },
+    {
+      name: "duplicate mode keys are all removed",
+      initialHash: "#mode=canvas&first=a+b&mode=app-template&second=%2Fraw%3Dvalue",
+      expectedHash: "#first=a+b&second=%2Fraw%3Dvalue",
+    },
+    {
+      name: "mode-like key is preserved",
+      initialHash: "#xmode=canvas&mode=canvas",
+      expectedHash: "#xmode=canvas",
+    },
+    {
+      name: "raw base64 characters are preserved byte-for-byte",
+      initialHash: "#mode=canvas&composition=abc+def/ghi==",
+      expectedHash: "#composition=abc+def/ghi==",
+    },
+  ];
+
+  for (const { name, initialHash, expectedHash, expectedComposition } of CASES) {
+    it(name, () => {
+      window.history.pushState({}, "", `/canvas${initialHash}`);
+      navigateToMode("catalog");
+      expect(window.location.hash).toBe(expectedHash);
+      expect(new URLSearchParams(window.location.hash.slice(1)).get("mode")).toBeNull();
+      if (expectedComposition) {
+        expect(compositionFromHash(window.location.hash)).toEqual(expectedComposition);
+      }
+    });
+  }
+
+  it("does not create a hash when no hash exists", () => {
+    window.history.pushState({}, "", "/canvas");
+    navigateToMode("catalog");
+    expect(window.location.hash).toBe("");
+  });
 });
