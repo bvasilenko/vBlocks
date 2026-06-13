@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="data:," />
+  <title>@booga/vblocks - showcase</title>
+  <script>
+    (function () {
+      var s = window.location.search;
+      var p = new URLSearchParams(s).get('p');
+      if (p) {
+        var q = new URLSearchParams(s).get('q');
+        var restored = p + (q ? '?' + decodeURIComponent(q) : '') + window.location.hash;
+        window.history.replaceState(null, '', restored);
+      }
+    })();
+  </script>
+  <script type="module" crossorigin src="/vBlocks/assets/index-Dq69OKH7.js"></script>
+  <link rel="stylesheet" crossorigin href="/vBlocks/assets/index-ej1f2gpT.css">
+</head>
+<body>
+  <div id="root"></div>
+</body>
+</html>
