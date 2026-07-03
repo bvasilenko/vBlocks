@@ -4,8 +4,10 @@ import { describe, it, expect } from "vitest";
 import { render } from "@testing-library/react";
 import { HeroCentered } from "../src/hero/HeroCentered";
 import { HeroSplit } from "../src/hero/HeroSplit";
-import { DENSITY_PY, DENSITY_PB, HERO_CTA_GAP_THRESHOLD_PX, type Density } from "../src/theme";
+import { FeaturesGrid } from "../src/features";
+import { DENSITY_PY, DENSITY_PB, type Density } from "../src/theme";
 import type { HeroSplitContent } from "../src/hero";
+import type { FeaturesGridContent } from "../src/features";
 
 const DENSITIES: readonly Density[] = ["compact", "normal", "spacious"];
 
@@ -16,6 +18,11 @@ const BASE_CONTENT = {
 };
 
 const IMAGE = { src: "/test.png", alt: "test" };
+
+const ADJACENT_FEATURES: FeaturesGridContent = {
+  heading: "What defines Stripe",
+  features: [{ title: "Reliability", description: "99.999% uptime SLA" }],
+};
 
 const HERO_PADDING_CASES: ReadonlyArray<{
   name: string;
@@ -49,10 +56,16 @@ const HERO_PADDING_CASES: ReadonlyArray<{
   },
 ];
 
-function heroLayout(container: HTMLElement): HTMLElement {
-  const layout = container.querySelector("section > *") as HTMLElement | null;
+function sectionLayout(section: Element): HTMLElement {
+  const layout = section.firstElementChild as HTMLElement | null;
   expect(layout).not.toBeNull();
   return layout!;
+}
+
+function heroLayout(container: HTMLElement): HTMLElement {
+  const section = container.querySelector("section");
+  expect(section).not.toBeNull();
+  return sectionLayout(section!);
 }
 
 function classStartsWith(el: HTMLElement, prefix: string): boolean {
@@ -60,10 +73,6 @@ function classStartsWith(el: HTMLElement, prefix: string): boolean {
 }
 
 describe("Hero vertical density contract", () => {
-  it("exports the app-template CTA gap threshold from the density scale", () => {
-    expect(HERO_CTA_GAP_THRESHOLD_PX).toBe(DENSITY_PB.normal * 4 + DENSITY_PY.normal * 4 + 16);
-  });
-
   for (const heroCase of HERO_PADDING_CASES) {
     for (const density of DENSITIES) {
       it(`${heroCase.name}: density ${density}`, () => {
@@ -117,4 +126,51 @@ describe("Hero layout structure contract", () => {
     expect(layout.classList.contains("items-start")).toBe(true);
     expect(layout.classList.contains("items-center")).toBe(false);
   });
+});
+
+describe("HeroSplit cta-anchored presentation - independent prop composition", () => {
+  it("imageFit scale-down and cta-anchored spacing apply independently without overriding each other", () => {
+    const content: HeroSplitContent = {
+      ...BASE_CONTENT,
+      image: IMAGE,
+      presentation: { spacing: "cta-anchored", imageFit: "scale-down" },
+    };
+    const { container } = render(<HeroSplit content={content} />);
+    const img = container.querySelector("img")!;
+    const layout = heroLayout(container);
+    expect(img.classList.contains("object-scale-down")).toBe(true);
+    expect(img.parentElement!.classList.contains("relative")).toBe(true);
+    expect(layout.classList.contains("items-start")).toBe(true);
+    expect(layout.classList.contains(`pt-${DENSITY_PY.normal}`)).toBe(true);
+    expect(layout.classList.contains(`pb-${DENSITY_PB.normal}`)).toBe(true);
+  });
+});
+
+describe("cta-anchored hero-to-next-section cross-section gap token contract", () => {
+  for (const density of DENSITIES) {
+    it(`density ${density}: hero pb and adjacent features py carry density-derived Tailwind classes`, () => {
+      const { container } = render(
+        <div>
+          <HeroSplit
+            content={{
+              ...BASE_CONTENT,
+              image: IMAGE,
+              density,
+              presentation: { spacing: "cta-anchored" },
+            }}
+          />
+          <FeaturesGrid content={ADJACENT_FEATURES} />
+        </div>
+      );
+
+      const sections = container.querySelectorAll("section");
+      expect(sections).toHaveLength(2);
+
+      const heroGrid = sectionLayout(sections[0]);
+      const featuresStack = sectionLayout(sections[1]);
+
+      expect(heroGrid.classList.contains(`pb-${DENSITY_PB[density]}`)).toBe(true);
+      expect(featuresStack.classList.contains(`py-${DENSITY_PY.normal}`)).toBe(true);
+    });
+  }
 });

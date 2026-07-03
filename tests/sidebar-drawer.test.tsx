@@ -72,6 +72,15 @@ describe("SidebarDrawer - backdrop presence", () => {
     rerender(<SidebarDrawer open={true} onClose={() => {}}>{children}</SidebarDrawer>);
     expect(container.querySelector("[aria-hidden='true']")).not.toBeNull();
   });
+
+  it("backdrop disappears when transitioning from open to closed", () => {
+    const { container, rerender } = render(
+      <SidebarDrawer open={true} onClose={() => {}}>{children}</SidebarDrawer>
+    );
+    expect(container.querySelector("[aria-hidden='true']")).not.toBeNull();
+    rerender(<SidebarDrawer open={false} onClose={() => {}}>{children}</SidebarDrawer>);
+    expect(container.querySelector("[aria-hidden='true']")).toBeNull();
+  });
 });
 
 describe("SidebarDrawer - close interactions", () => {
@@ -99,5 +108,77 @@ describe("SidebarDrawer - close interactions", () => {
       <SidebarDrawer open={true} onClose={() => {}}>{children}</SidebarDrawer>
     );
     expect((getByRole("button", { name: "Close" }) as HTMLButtonElement).type).toBe("button");
+  });
+
+  it("clicking children inside the aside does not call onClose", () => {
+    const onClose = vi.fn();
+    const { getByText } = render(
+      <SidebarDrawer open={true} onClose={onClose}>{children}</SidebarDrawer>
+    );
+    fireEvent.click(getByText(CHILD_TEXT));
+    expect(onClose).not.toHaveBeenCalled();
+  });
+});
+
+describe("SidebarDrawer - label display", () => {
+  it("renders the default label as visible text in the mobile header", () => {
+    const { getByText } = render(
+      <SidebarDrawer open={false} onClose={() => {}}>{children}</SidebarDrawer>
+    );
+    expect(getByText("Variant selector")).toBeTruthy();
+  });
+
+  it("renders a custom label as visible text in the mobile header", () => {
+    const { getByText } = render(
+      <SidebarDrawer open={false} onClose={() => {}} label="My Panel">{children}</SidebarDrawer>
+    );
+    expect(getByText("My Panel")).toBeTruthy();
+  });
+
+  it("renders the label as visible text when the drawer is open", () => {
+    const { getByText } = render(
+      <SidebarDrawer open={true} onClose={() => {}} label="Custom label">{children}</SidebarDrawer>
+    );
+    expect(getByText("Custom label")).toBeTruthy();
+  });
+});
+
+describe("SidebarDrawer - translation state", () => {
+  it("aside carries -translate-x-full when closed", () => {
+    const { container } = render(
+      <SidebarDrawer open={false} onClose={() => {}}>{children}</SidebarDrawer>
+    );
+    const aside = container.querySelector("aside")!;
+    expect(aside.classList.contains("-translate-x-full")).toBe(true);
+    expect(aside.classList.contains("translate-x-0")).toBe(false);
+  });
+
+  it("aside carries translate-x-0 when open", () => {
+    const { container } = render(
+      <SidebarDrawer open={true} onClose={() => {}}>{children}</SidebarDrawer>
+    );
+    const aside = container.querySelector("aside")!;
+    expect(aside.classList.contains("translate-x-0")).toBe(true);
+    expect(aside.classList.contains("-translate-x-full")).toBe(false);
+  });
+
+  it("aside swaps from -translate-x-full to translate-x-0 when opened", () => {
+    const { container, rerender } = render(
+      <SidebarDrawer open={false} onClose={() => {}}>{children}</SidebarDrawer>
+    );
+    rerender(<SidebarDrawer open={true} onClose={() => {}}>{children}</SidebarDrawer>);
+    const aside = container.querySelector("aside")!;
+    expect(aside.classList.contains("translate-x-0")).toBe(true);
+    expect(aside.classList.contains("-translate-x-full")).toBe(false);
+  });
+
+  it("aside swaps from translate-x-0 to -translate-x-full when closed", () => {
+    const { container, rerender } = render(
+      <SidebarDrawer open={true} onClose={() => {}}>{children}</SidebarDrawer>
+    );
+    rerender(<SidebarDrawer open={false} onClose={() => {}}>{children}</SidebarDrawer>);
+    const aside = container.querySelector("aside")!;
+    expect(aside.classList.contains("-translate-x-full")).toBe(true);
+    expect(aside.classList.contains("translate-x-0")).toBe(false);
   });
 });

@@ -6,12 +6,12 @@ import type { TemplateId } from "@booga/vbrand/templates";
 import type { VbrandType } from "@booga/vbrand";
 import type { CompositionSpec } from "@booga/vbrand/composition";
 import { HeroSplit, type HeroSplitContent } from "../hero";
-import { selectBrandMarkImage } from "./brand-mark";
+import { selectBrandMarkImage, BRAND_MARK_IMAGE_FIT } from "./brand-mark";
 import type { GalleryMode, ContentOverrideMap } from "./gallery-mode";
 
 const APP_TEMPLATE_HERO_PRESENTATION: HeroSplitContent["presentation"] = {
   spacing: "cta-anchored",
-  imageFit: "scale-down",
+  imageFit: BRAND_MARK_IMAGE_FIT,
 };
 
 type ElementWithChildren = ReactElement<{ children?: ReactNode }>;

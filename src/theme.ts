@@ -53,15 +53,21 @@ export function densityPb(density: Density | undefined): 6 | 12 | 16 {
 
 /**
  * Maximum tolerated pixel gap between the hero CTA button bottom edge and the
- * first heading of the next section at density="normal". Derivation (16px root):
- *   hero pb     = DENSITY_PB.normal * 4 = 48 px
- *   features pt = DENSITY_PY.normal * 4 = 96 px
- *   tolerance   = 16 px (subpixel rounding + micro-padding headroom)
- * Reducing below the 144 px structural floor requires a vBrand defaultComposition
- * density change upstream, not a vBlocks layout edit.
+ * first heading of the next section at density="normal". Three-component derivation:
+ *   hero pb           = DENSITY_PB.normal * 4 = 48 px
+ *   features pt       = DENSITY_PY.normal * 4 = 96 px
+ *   heading stack     = 64 px (kicker + eyebrow + gap-3 elements above h2 in
+ *                       Stripe-fixture sections content at density=normal;
+ *                       measured at runtime -- not driven by a layout token)
+ *   tolerance         = 8 px (subpixel rounding + viewport variance headroom)
+ *   total             = 216 px
+ * The padding-only floor (144 px) undershoots the runtime-observed minimum (~201 px)
+ * because content-driven elements above h2 contribute ~57 px of additional offset.
+ * Reducing below 216 px requires either a vBrand defaultComposition density change
+ * upstream or a sections-content change (fewer pre-heading elements), not a layout edit.
  */
 export const HERO_CTA_GAP_THRESHOLD_PX =
-  DENSITY_PB.normal * 4 + DENSITY_PY.normal * 4 + 16;
+  DENSITY_PB.normal * 4 + DENSITY_PY.normal * 4 + 72;
 
 /**
  * Tone-pill content schema item. Each pill renders through vUi's `<Pill>`

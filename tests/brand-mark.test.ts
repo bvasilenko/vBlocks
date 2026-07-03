@@ -3,7 +3,8 @@
 import { describe, expect, it } from "vitest";
 import { FIXTURE_SLUGS, loadFixture } from "@booga/vfixtures";
 import type { VbrandType } from "@booga/vbrand";
-import { selectBrandMarkImage } from "../src/modes/brand-mark";
+import { selectBrandMarkImage, BRAND_MARK_IMAGE_FIT } from "../src/modes/brand-mark";
+import { HeroSplitPresentationSchema } from "../src/hero/HeroSplit/schema";
 
 type AssetOverride = Partial<{
   favicon: Partial<VbrandType["assets"]["favicon"]>;
@@ -204,5 +205,16 @@ describe("selectBrandMarkImage - packaged fixture integration", () => {
       expect(image.src).not.toMatch(LOW_FIDELITY_PATTERN);
     }
     expect(image.fallbackSrc).toMatch(/^data:image\/svg\+xml;charset=UTF-8,/);
+  });
+});
+
+describe("BRAND_MARK_IMAGE_FIT - HeroSplit presentation schema contract", () => {
+  it("is accepted by HeroSplitPresentationSchema as a valid imageFit value", () => {
+    expect(() => HeroSplitPresentationSchema.parse({ imageFit: BRAND_MARK_IMAGE_FIT })).not.toThrow();
+  });
+
+  it("is a member of the HeroSplitPresentation imageFit enum", () => {
+    const imageFitOptions = HeroSplitPresentationSchema.shape.imageFit.unwrap().options;
+    expect(imageFitOptions).toContain(BRAND_MARK_IMAGE_FIT);
   });
 });

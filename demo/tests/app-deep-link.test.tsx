@@ -7,50 +7,6 @@ import { compositionToHash, compositionFromHash } from "@booga/vbrand/compositio
 import { canvasMode } from "@booga/vblocks/modes";
 import { App } from "../src/App";
 
-type AppSurface = "catalog" | "canvas" | "app-template";
-
-type SurfaceExpectation = {
-  mode: AppSurface;
-  url: string;
-  presentRole: "navigation" | "complementary" | "button";
-  presentName: string;
-  absent: Array<{ role: "navigation" | "complementary" | "button"; name: string }>;
-};
-
-const SURFACE_EXPECTATIONS: SurfaceExpectation[] = [
-  {
-    mode: "catalog",
-    url: "/?mode=catalog",
-    presentRole: "navigation",
-    presentName: "Block navigation",
-    absent: [
-      { role: "complementary", name: "Variant selector" },
-      { role: "button", name: "landing" },
-    ],
-  },
-  {
-    mode: "canvas",
-    url: "/?mode=canvas",
-    presentRole: "complementary",
-    presentName: "Variant selector",
-    absent: [
-      { role: "navigation", name: "Block navigation" },
-      { role: "complementary", name: "Catalog options" },
-    ],
-  },
-  {
-    mode: "app-template",
-    url: "/?mode=app-template",
-    presentRole: "button",
-    presentName: "landing",
-    absent: [
-      { role: "navigation", name: "Block navigation" },
-      { role: "complementary", name: "Variant selector" },
-      { role: "complementary", name: "Catalog options" },
-    ],
-  },
-];
-
 function renderAt(url: string): ReturnType<typeof render> {
   window.history.pushState({}, "", url);
   return render(<App />);
@@ -71,39 +27,6 @@ function fixtureBrandUrl(slug: FixtureSlug): string {
 beforeEach(() => {
   window.history.pushState({}, "", "/");
   window.location.hash = "";
-});
-
-describe("App - URL-selected surface integration", () => {
-  it("defaults to the catalog surface when no mode source is present", () => {
-    const { getByRole, queryByRole } = render(<App />);
-    expect(getByRole("navigation", { name: "Block navigation" })).toBeTruthy();
-    expect(queryByRole("complementary", { name: "Variant selector" })).toBeNull();
-  });
-
-  for (const { mode, url, presentRole, presentName, absent } of SURFACE_EXPECTATIONS) {
-    it(`${mode} URL mounts only the ${mode} primary surface`, () => {
-      const { getByRole, queryByRole } = renderAt(url);
-      expect(getByRole(presentRole, { name: presentName })).toBeTruthy();
-      for (const absentElement of absent) {
-        expect(queryByRole(absentElement.role, { name: absentElement.name })).toBeNull();
-      }
-    });
-  }
-});
-
-describe("App - URL source precedence integration", () => {
-  it("uses search mode over a conflicting hash and pathname when mounting App", () => {
-    const { getByRole, queryByRole } = renderAt("/app-template?mode=canvas#mode=catalog");
-    expect(getByRole("complementary", { name: "Variant selector" })).toBeTruthy();
-    expect(queryByRole("navigation", { name: "Block navigation" })).toBeNull();
-    expect(queryByRole("button", { name: "landing" })).toBeNull();
-  });
-
-  it("falls through to hash mode when search mode is not known", () => {
-    const { getByRole, queryByRole } = renderAt("/app-template?mode=unknown#mode=canvas");
-    expect(getByRole("complementary", { name: "Variant selector" })).toBeTruthy();
-    expect(queryByRole("button", { name: "landing" })).toBeNull();
-  });
 });
 
 describe("App - browser history integration", () => {

@@ -8,6 +8,8 @@ export type BrandMarkImage = {
   fallbackSrc: string;
 };
 
+export const BRAND_MARK_IMAGE_FIT = "scale-down" as const;
+
 type Candidate = {
   source: string;
   label: string;

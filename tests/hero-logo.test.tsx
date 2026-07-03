@@ -4,7 +4,7 @@ import { describe, it, expect } from "vitest";
 import { fireEvent, render } from "@testing-library/react";
 import { FIXTURE_SLUGS, loadFixture } from "@booga/vfixtures";
 import { HeroSplit } from "../src/hero/HeroSplit";
-import { selectBrandMarkImage } from "../src/modes/brand-mark";
+import { selectBrandMarkImage, BRAND_MARK_IMAGE_FIT } from "../src/modes/brand-mark";
 import type { HeroSplitContent } from "../src/hero";
 
 const BASE_CONTENT: Omit<HeroSplitContent, "image"> = {
@@ -44,6 +44,11 @@ const IMAGE_FIT_CASES: ReadonlyArray<{
 
 const FALLBACK_SRC = "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%2F%3E";
 
+function assertNoFilterApplied(img: HTMLImageElement): void {
+  expect(img.getAttribute("filter")).toBeNull();
+  expect(img.style.filter).toBe("");
+}
+
 function renderImage(content: HeroSplitContent): { img: HTMLImageElement; layout: HTMLElement } {
   const { container } = render(<HeroSplit content={content} />);
   const img = container.querySelector("img") as HTMLImageElement | null;
@@ -67,8 +72,7 @@ describe("HeroSplit image rendering contract", () => {
         const { img, layout } = renderImage(contentFor(image, fitCase.presentation));
         expect(img.getAttribute("src")).toBe(image.src);
         expect(img.getAttribute("alt")).toBe(image.alt);
-        expect(img.getAttribute("filter")).toBeNull();
-        expect(img.style.filter).toBe("");
+        assertNoFilterApplied(img);
         expect(img.getAttribute("width")).toBeNull();
         expect(img.getAttribute("height")).toBeNull();
         expect(img.classList.contains(fitCase.includedClass)).toBe(true);
@@ -93,13 +97,12 @@ describe("HeroSplit image rendering contract", () => {
     const { img } = renderImage({
       ...BASE_CONTENT,
       image: mark,
-      presentation: { imageFit: "scale-down" },
+      presentation: { imageFit: BRAND_MARK_IMAGE_FIT },
     });
 
     expect(img.getAttribute("src")).toBe(mark.src);
     expect(img.getAttribute("alt")).toBe(mark.alt);
-    expect(img.getAttribute("filter")).toBeNull();
-    expect(img.style.filter).toBe("");
+    assertNoFilterApplied(img);
     expect(img.getAttribute("width")).toBeNull();
     expect(img.getAttribute("height")).toBeNull();
     expect(img.classList.contains("object-scale-down")).toBe(true);
@@ -107,6 +110,13 @@ describe("HeroSplit image rendering contract", () => {
   });
 
   it.each([
+    {
+      name: "no error leaves the original source unchanged",
+      image: { src: "https://cdn.example.com/missing.png", alt: "Brand logo", fallbackSrc: FALLBACK_SRC },
+      errors: 0,
+      expectedSrc: "https://cdn.example.com/missing.png",
+      fallbackApplied: undefined,
+    },
     {
       name: "primary failure swaps to fallback once",
       image: { src: "https://cdn.example.com/missing.png", alt: "Brand logo", fallbackSrc: FALLBACK_SRC },
@@ -118,6 +128,13 @@ describe("HeroSplit image rendering contract", () => {
       name: "repeated failure does not loop after fallback is active",
       image: { src: "https://cdn.example.com/missing.png", alt: "Brand logo", fallbackSrc: FALLBACK_SRC },
       errors: 2,
+      expectedSrc: FALLBACK_SRC,
+      fallbackApplied: "true",
+    },
+    {
+      name: "third and further failures remain idempotent on the fallback source",
+      image: { src: "https://cdn.example.com/missing.png", alt: "Brand logo", fallbackSrc: FALLBACK_SRC },
+      errors: 3,
       expectedSrc: FALLBACK_SRC,
       fallbackApplied: "true",
     },
@@ -139,5 +156,32 @@ describe("HeroSplit image rendering contract", () => {
 
     expect(img.getAttribute("src")).toBe(expectedSrc);
     expect(img.dataset.vblocksFallbackApplied).toBe(fallbackApplied);
+  });
+});
+
+describe("HeroSplit image fallback - presentation-agnostic error recovery", () => {
+  it("cover presentation triggers fallback on error the same as scale-down", () => {
+    const image = {
+      src: "https://cdn.example.com/missing.png",
+      alt: "Brand logo",
+      fallbackSrc: FALLBACK_SRC,
+    };
+    const { img } = renderImage({ ...BASE_CONTENT, image });
+    fireEvent.error(img);
+    expect(img.getAttribute("src")).toBe(FALLBACK_SRC);
+    expect(img.dataset.vblocksFallbackApplied).toBe("true");
+  });
+
+  it("does not swap src when fallbackSrc equals the primary src", () => {
+    const src = "https://cdn.example.com/logo.png";
+    const image = { src, alt: "Brand logo", fallbackSrc: src };
+    const { img } = renderImage({
+      ...BASE_CONTENT,
+      image,
+      presentation: { imageFit: "scale-down" },
+    });
+    fireEvent.error(img);
+    expect(img.getAttribute("src")).toBe(src);
+    expect(img.dataset.vblocksFallbackApplied).toBeUndefined();
   });
 });
